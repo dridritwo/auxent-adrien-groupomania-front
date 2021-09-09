@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import { computed } from 'vue'
 const store = useStore()
 
-let userName = ref("")
+const user = computed(() => store.state.user)
+const formatedUser = computed(() => store.getters.formattedUser)
 
 const formData = ref({
   email: "",
@@ -20,8 +22,9 @@ async function submit() {
   }).then((response) => {
     return response.json()
   })
-  console.log("response : ", response.username)
-  userName.value = response.username
+  console.log("response : ", response)
+  store.commit('SET_USER', response)
+  console.log("state : ", store.state.user)
 }
 
 async function getUsers() {
@@ -42,9 +45,10 @@ async function getUsers() {
 <template>
   <div id="home">
     <div class="home-container">
-      <div class="username" v-if="userName">
-        user : {{userName}}
+      <div class="username" v-if="store.state.user">
+        user : {{user.username}}
       </div>
+      formatted user : {{formatedUser}}
       <h1>Sign in</h1>
       <form id="login-form" @submit.prevent="submit">
         <label for="email">Email:</label>
