@@ -1,14 +1,15 @@
 <script setup>
 import HomeNotLogged from '@/views/HomeNotLogged.vue'
-import HelloWorld from './components/HelloWorld.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 </script>
 
 <template>
-  <HomeNotLogged class="full" msg="Hello" />
+  
+  <router-view></router-view>
 </template>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
 
 #app {
   font-family: 'Nunito', Helvetica, Arial, sans-serif;

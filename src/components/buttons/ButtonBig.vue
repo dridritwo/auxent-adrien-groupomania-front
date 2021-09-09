@@ -6,13 +6,12 @@ defineProps({
 </script>
 
 <template>
-  <button>
-    {{ text }}
-  </button>
+<router-link class="button" to='/about'>{{ text }}</router-link>
+ 
 </template>
 
 <style lang="scss" scoped>
-button {
+.button {
   color: $dark;
   background-color: $light-grey;
   width: 80%;
@@ -21,6 +20,7 @@ button {
   border: none;
   margin: 10%;
   padding: 20px;
+  display: block;
 
   font-family: 'Nunito', Helvetica, Arial, sans-serif;
   font-weight: 700;
