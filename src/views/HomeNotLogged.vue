@@ -1,31 +1,32 @@
 <script setup>
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
-
-
-function logIn() {
-  console.log("login", this.$router)
-  //this.$router.push('/login')
-}
-function goAbout() {
-  console.log("router : ", this.$router)
-}
+import { useStore } from 'vuex'
+const store = useStore()
 </script>
 
 <template>
   <div id="home-not-logged">
-    <IconAboveFont1 />
-    <ButtonBig @click="logIn()" text="Log in" />
-    <ButtonBig  text="Sign up" />
-    <button @click="goAbout()">go about</button>
+    <div class="home-container">
+ name {{ $store.state.user.userName }}
+      <IconAboveFont1 />
+    <ButtonBig text="Log in" routeUrl="/login" />
+    <ButtonBig text="Sign up" routeUrl="/signup" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #home-not-logged {
   background-color: $primary;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .home-container {
+    max-width: $max-width-desk;
+  }
 }
 .shadow {
   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));

@@ -2,9 +2,9 @@
   "name": "auxent-adrien-groupomania-front",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3001",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview --port 3001"
   },
   "dependencies": {
     "vue": "^3.2.6",
