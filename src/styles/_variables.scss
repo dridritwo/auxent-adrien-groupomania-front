@@ -1,0 +1,17 @@
+$primary: #264653;
+$secondary: #E9C46A;
+$tertiary: #F4A261;
+$fourth: #2A9D8F;
+$fifth: #E76F51;
+
+$grey: rgb(216, 216, 216);
+$light-grey: lighten($grey, 10);
+$dark: rgb(39, 39, 39);
+
+$primary-gradient: linear-gradient(336deg, $primary 0%, $secondary 100%);
+$primary-gradient-lighten: linear-gradient(336deg, lighten($primary, 5) 0%, lighten($secondary, 5) 100%);
+
+$standard-padding: 40px 50px;
+$standard-title-margin: 30px;
+
+$max-width-desk: 600px;
