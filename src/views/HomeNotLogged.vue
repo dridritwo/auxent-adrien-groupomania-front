@@ -2,13 +2,17 @@
 import ButtonBig from '@/components/buttons/ButtonBig.vue';
 import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 import { useStore } from 'vuex'
+import {onMounted} from 'vue'
 const store = useStore()
+
+onMounted(()=>{
+  console.log("jihihj", store.user)
+})
 </script>
 
 <template>
   <div id="home-not-logged">
     <div class="home-container">
- name {{ $store.state.user.userName }}
       <IconAboveFont1 />
     <ButtonBig text="Log in" routeUrl="/login" />
     <ButtonBig text="Sign up" routeUrl="/signup" />
