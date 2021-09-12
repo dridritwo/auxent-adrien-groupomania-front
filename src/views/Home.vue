@@ -4,6 +4,7 @@ import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 import { useStore } from 'vuex'
 import { ref } from 'vue'
 import { onMounted, computed } from 'vue'
+import ButtonLogOut from '../components/buttons/ButtonLogOut.vue';
 
 const store = useStore()
 const user = computed(() => store.state.user)
@@ -11,11 +12,8 @@ const formatedUser = computed(() => store.getters.formattedUser)
 
 onMounted(() => {
       console.log('Component is mounted!')
+      console.log("user : ", user)
     })
-
-    function click() {
-      
-    }
 </script>
 
 <template>
@@ -23,8 +21,10 @@ onMounted(() => {
     <div class="home-container">
  name {{ user.username }}
  name {{ formatedUser }}
+
+ 
       
-    <button @click="click">home</button>
+    <ButtonLogOut />
     </div>
   </div>
 </template>
