@@ -2,6 +2,10 @@
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import {logUser} from '@/services/UserService'
+import { useRouter, useRoute } from 'vue-router'
+const route = useRoute()
+const router = useRouter()
 const store = useStore()
 
 const user = computed(() => store.state.user)
@@ -13,32 +17,12 @@ const formData = ref({
 })
 
 async function submit() {
-  let myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  let response = await fetch("http://localhost:3000/api/v1/users/login", {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({email: formData.value.email, password: formData.value.password})
-  }).then((response) => {
-    return response.json()
-  })
+  let response = await logUser(formData.value);
   console.log("response : ", response)
   store.commit('SET_USER', response)
-  console.log("state : ", store.state.user)
+  router.push('/home')
 }
 
-async function getUsers() {
-  let myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNiIsImlhdCI6MTYzMTE5OTk5OSwiZXhwIjoxNjMxMjg2Mzk5fQ.3hJIby5jbbr-HM5roGGT-G2O-eAsTXV7lQXy54gerpM`);
-  let response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "GET",
-    headers: myHeaders,
-  }).then((response) => {
-    return response.json()
-  })
-  console.log("response : ", response)
-}
 </script>
 
 

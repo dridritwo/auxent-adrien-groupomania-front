@@ -11,3 +11,16 @@ export async function getUsersService() {
   })
   return result
 }
+
+export async function logUser(formData) {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  let response = await fetch("http://localhost:3000/api/v1/users/login", {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({email: formData.email, password: formData.password})
+  }).then((response) => {
+    return response.json()
+  })
+  return response;
+}
