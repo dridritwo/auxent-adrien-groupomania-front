@@ -1,7 +1,7 @@
 import { isIntegerKey } from "@vue/shared";
-import { createStore } from "vuex";
+import { createStore, Store } from "vuex";
 
-export default createStore({
+export const store = createStore({
   state: {
     user: {
       username: String,
@@ -13,16 +13,20 @@ export default createStore({
   },
   mutations: {
     SET_USER(state, payload) {
-      console.log("store", payload)
       state.user = payload
   }
   },
   getters: {
     formattedUser: state => {
         return `${state.user.username}-${state.user.id}-${state.user.email}`
+    },
+    userToken: state => {
+      return state.user.token;
     }
 },
   actions: {
       
   }
 });
+
+export default store;

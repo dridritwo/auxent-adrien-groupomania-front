@@ -1,6 +1,5 @@
 <script setup>
 import HomeNotLogged from '@/views/HomeNotLogged.vue'
-import HelloWorld from '@/components/HelloWorld.vue';
 </script>
 
 <template>

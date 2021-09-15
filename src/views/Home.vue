@@ -1,31 +1,30 @@
 <script setup>
-import ButtonBig from '@/components/buttons/ButtonBig.vue';
-import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 import { useStore } from 'vuex'
-import { ref } from 'vue'
 import { onMounted, computed } from 'vue'
-import ButtonLogOut from '../components/buttons/ButtonLogOut.vue';
+import { useRouter, useRoute } from "vue-router";
+
+import ButtonLogOut from '@/components/buttons/ButtonLogOut.vue';
+import ButtonDeleteUser from '@/components/buttons/ButtonDeleteUser.vue';
+const route = useRoute();
+const router = useRouter();
 
 const store = useStore()
 const user = computed(() => store.state.user)
 const formatedUser = computed(() => store.getters.formattedUser)
+const userToken = computed(() => store.getters.userToken)
 
 onMounted(() => {
-      console.log('Component is mounted!')
-      console.log("user : ", user)
-    })
+
+})
 </script>
 
 <template>
   <div id="home">
-    <div class="home-container">
- name {{ user.username }}
- name {{ formatedUser }}
-
- 
-      
-    <ButtonLogOut />
-    </div>
+    
+      <div>name {{ user.username }}</div>
+      <ButtonLogOut />
+      <ButtonDeleteUser />
+      <img :src="`${user.avatar_url}`" alt="avatar" >
   </div>
 </template>
 
@@ -35,6 +34,7 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
@@ -45,5 +45,4 @@ onMounted(() => {
 .shadow {
   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
-
 </style>

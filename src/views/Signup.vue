@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import { UserModel } from "../models/UserModel";
+<script setup >
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import { logUser } from "../services/UserService";
+import { signUpUser } from "../services/UserService";
 import { useRouter, useRoute } from "vue-router";
 const route = useRoute();
 const router = useRouter();
@@ -15,10 +14,11 @@ const formatedUser = computed(() => store.getters.formattedUser);
 const formData = ref({
   email: "",
   password: "",
+  username: "",
 });
 
 async function submit() {
-  let response: UserModel = await logUser(formData.value);
+  let response = await signUpUser(formData.value);
   store.commit("SET_USER", response);
   localStorage.setItem("USER", JSON.stringify(response));
   router.push("/home");
@@ -30,7 +30,7 @@ async function submit() {
     <div class="home-container">
       <div class="header-back">
         <div class="header">
-          <h1>Sign in</h1>
+          <h1>Sign up</h1>
         </div>
       </div>
       <div class="form-back">
@@ -44,6 +44,14 @@ async function submit() {
             name="email"
             v-model="formData.email"
             placeholder="email"
+          />
+          <label for="username">Username:</label>
+          <input
+            class="input"
+            type="username"
+            name="username"
+            v-model="formData.username"
+            placeholder="username"
           />
           <label for="password">Password:</label>
           <input

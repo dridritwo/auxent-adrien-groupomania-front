@@ -6,8 +6,7 @@ import {onMounted} from 'vue'
 const store = useStore()
 
 onMounted(()=>{
-  console.log("jihihj", store.user)
-  // should check fortoken in local storage
+  
 })
 </script>
 
