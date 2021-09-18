@@ -1,9 +1,10 @@
-<script setup >
+<script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { signUpUser } from "../services/UserService";
 import { useRouter, useRoute } from "vue-router";
+import ArrowLeft from "../assets/ArrowLeft.vue";
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
@@ -29,6 +30,7 @@ function goBack() {
 
 <template>
   <div id="home">
+    <ArrowLeft class="top-left" @click="goBack" />
     <div class="home-container">
       <div class="header-back">
         <div class="header">
@@ -37,38 +39,33 @@ function goBack() {
       </div>
       <div class="form-back">
         <form id="login-form" @submit.prevent="submit">
-        <div class="inputs">
-
-          <label for="email">Email:</label>
-          <input
-            class="input"
-            type="email"
-            name="email"
-            v-model="formData.email"
-            placeholder="email"
-          />
-          <label for="username">Username:</label>
-          <input
-            class="input"
-            type="username"
-            name="username"
-            v-model="formData.username"
-            placeholder="username"
-          />
-          <label for="password">Password:</label>
-          <input
-            class="input"
-            type="password"
-            name="password"
-            v-model="formData.password"
-            placeholder="password"
-          />
-        </div>
-        <div class="buttons-div">
-
-          <button class="button" @click="goBack">Back</button>
+          <div class="inputs">
+            <label for="email">Email:</label>
+            <input
+              class="input"
+              type="email"
+              name="email"
+              v-model="formData.email"
+              placeholder="email"
+            />
+            <label for="username">Username:</label>
+            <input
+              class="input"
+              type="username"
+              name="username"
+              v-model="formData.username"
+              placeholder="username"
+            />
+            <label for="password">Password:</label>
+            <input
+              class="input"
+              type="password"
+              name="password"
+              v-model="formData.password"
+              placeholder="password"
+            />
+          </div>
           <button class="button">Submit</button>
-        </div>
         </form>
       </div>
     </div>
@@ -79,10 +76,11 @@ function goBack() {
 #home {
   background-color: $primary;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 5px;
   .home-container {
     max-width: $max-width-desk;
     background-color: $secondary;
@@ -114,12 +112,12 @@ function goBack() {
         padding: 5%;
         .inputs {
           display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        width: 100%;
-        font-size: 30px;
-        margin: 20px 0px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          width: 100%;
+          font-size: 30px;
+          margin: 20px 0px;
         }
         .button {
           margin: 0%;
@@ -132,12 +130,6 @@ function goBack() {
         label {
           text-align: start;
           width: 100%;
-        }
-        .buttons-div {
-          display: flex;
-          gap: 2%;
-          width: 100%;
-          flex-basis: 1 2;
         }
       }
     }

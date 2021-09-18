@@ -5,10 +5,10 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import { logUser } from "../services/UserService";
 import { useRouter, useRoute } from "vue-router";
+import ArrowLeft from "../assets/ArrowLeft.vue";
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
-
 
 const formData = ref({
   email: "",
@@ -26,6 +26,7 @@ function goBack() {
 
 <template>
   <div id="home">
+    <ArrowLeft class="top-left" @click="goBack" />
     <div class="home-container">
       <div class="header-back">
         <div class="header">
@@ -52,10 +53,8 @@ function goBack() {
               placeholder="password"
             />
           </div>
-          <div class="buttons-div">
-            <button class="button" @click="goBack">Back</button>
-            <button class="button">Submit</button>
-          </div>
+
+          <button class="button">Submit</button>
         </form>
       </div>
     </div>
@@ -119,12 +118,6 @@ function goBack() {
         label {
           text-align: start;
           width: 100%;
-        }
-        .buttons-div {
-          display: flex;
-          gap: 2%;
-          width: 100%;
-          flex-basis: 1 2;
         }
       }
     }

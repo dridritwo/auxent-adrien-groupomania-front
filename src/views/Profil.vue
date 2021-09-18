@@ -5,6 +5,7 @@ import { useRouter, useRoute } from "vue-router";
 
 import ButtonLogOut from '@/components/buttons/ButtonLogOut.vue';
 import ButtonDeleteUser from '@/components/buttons/ButtonDeleteUser.vue';
+import ArrowLeft from '../assets/ArrowLeft.vue';
 const route = useRoute();
 const router = useRouter();
 
@@ -19,8 +20,8 @@ function goBack() {
 </script>
 
 <template>
-  <div v-if="store.state.user" id="home">
-    <button @click="goBack">Back</button>
+  <div v-if="store.state.user" id="profil">
+    <ArrowLeft class="top-left" @click="goBack" />
     <img class="profile-image" :src="`${store.state.user.avatar_url}`" alt="avatar" >
     
       <div>name : {{ store.state.user.username }}</div>
@@ -32,7 +33,7 @@ function goBack() {
 </template>
 
 <style lang="scss" scoped>
-#home {
+#profil {
   background-color: $primary;
   width: 100vw;
   height: 100vh;
@@ -41,11 +42,8 @@ function goBack() {
   justify-content: center;
   align-items: center;
   color: white;
-  .home-container {
-    max-width: $max-width-desk;
-  }
+  
 }
-.shadow {
-  filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-}
+
+
 </style>

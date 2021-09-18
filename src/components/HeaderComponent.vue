@@ -19,7 +19,7 @@ onMounted(() => {
 
 <template>
 <header>
-  <img class="profile-image" @click="go(`/profil`)" :src="`${store.state.user.avatar_url}`" alt="avatar" >
+  <img class="profile-image link" @click="go(`/profil`)" :src="`${store.state.user.avatar_url}`" alt="avatar" >
 
 </header>
 </template>
