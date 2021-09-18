@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from "vuex";
 
@@ -6,17 +6,17 @@ const store = useStore();
 const route = useRoute()
 const router = useRouter()
 
-function go() {
-  store.commit("SET_USER", {});
-  localStorage.removeItem("USER");
-  router.push("/")
+function go(slug: string) {
+  
+  router.push(slug)
 }
 
 
 </script>
 
 <template>
-  <button @click="go">log out</button>
+  <button @click="go(`/profile`)">Profile</button>
+  
 </template>
 
 <style lang="scss" scoped>

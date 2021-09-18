@@ -44,7 +44,7 @@ export async function logUser(formData: FormDataModel) {
 export async function signUpUser(formData: FormDataModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  await fetch("http://localhost:3000/api/v1/users", {
+  let response = await fetch("http://localhost:3000/api/v1/users", {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
@@ -52,15 +52,14 @@ export async function signUpUser(formData: FormDataModel) {
       password: formData.password,
       username: formData.username,
     }),
-  }).then((response) => {
+  }).then(async (response) => {
     if (response.ok) {
-      return response;
+      return await logUser(formData);;
     } else {
       throw new Error('Something went wrong');
     }
   }).catch((error) => {
 });
-  let response = await logUser(formData);
   return response;
 }
 

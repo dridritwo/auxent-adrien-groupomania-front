@@ -23,6 +23,10 @@ async function submit() {
   localStorage.setItem("USER", JSON.stringify(response));
   router.push("/home");
 }
+
+function goBack() {
+  router.push("/");
+}
 </script>
 
 <template>
@@ -62,8 +66,11 @@ async function submit() {
             placeholder="password"
           />
         </div>
+        <div class="buttons-div">
 
+          <button class="button" @click="goBack">Back</button>
           <button class="button">Submit</button>
+        </div>
         </form>
       </div>
     </div>
@@ -127,6 +134,12 @@ async function submit() {
         label {
           text-align: start;
           width: 100%;
+        }
+        .buttons-div {
+          display: flex;
+          gap: 2%;
+          width: 100%;
+          flex-basis: 1 2;
         }
       }
     }

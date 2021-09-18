@@ -23,6 +23,9 @@ async function submit() {
   localStorage.setItem("USER", JSON.stringify(response));
   router.push("/home");
 }
+function goBack() {
+  router.push("/");
+}
 </script>
 
 <template>
@@ -35,27 +38,28 @@ async function submit() {
       </div>
       <div class="form-back">
         <form id="login-form" @submit.prevent="submit">
-        <div class="inputs">
-
-          <label for="email">Email:</label>
-          <input
-            class="input"
-            type="email"
-            name="email"
-            v-model="formData.email"
-            placeholder="email"
-          />
-          <label for="password">Password:</label>
-          <input
-            class="input"
-            type="password"
-            name="password"
-            v-model="formData.password"
-            placeholder="password"
-          />
-        </div>
-
-          <button class="button">Submit</button>
+          <div class="inputs">
+            <label for="email">Email:</label>
+            <input
+              class="input"
+              type="email"
+              name="email"
+              v-model="formData.email"
+              placeholder="email"
+            />
+            <label for="password">Password:</label>
+            <input
+              class="input"
+              type="password"
+              name="password"
+              v-model="formData.password"
+              placeholder="password"
+            />
+          </div>
+          <div class="buttons-div">
+            <button class="button" @click="goBack">Back</button>
+            <button class="button">Submit</button>
+          </div>
         </form>
       </div>
     </div>
@@ -101,12 +105,12 @@ async function submit() {
         padding: 5%;
         .inputs {
           display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        width: 100%;
-        font-size: 30px;
-        margin: 20px 0px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          width: 100%;
+          font-size: 30px;
+          margin: 20px 0px;
         }
         .button {
           margin: 0%;
@@ -119,6 +123,12 @@ async function submit() {
         label {
           text-align: start;
           width: 100%;
+        }
+        .buttons-div {
+          display: flex;
+          gap: 2%;
+          width: 100%;
+          flex-basis: 1 2;
         }
       }
     }

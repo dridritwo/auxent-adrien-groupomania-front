@@ -12,7 +12,6 @@ const success = ref(false);
 
 async function delUser() {
   let response = await deleteUser(store.state.user.id, store.state.user.token);
-  console.log("response in button : ", response)
   if (response.ok) {
     success.value = true;
     setTimeout(function () {
@@ -39,8 +38,8 @@ button {
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.35));
   border-radius: 20px;
   border: none;
-  margin: 10%;
-  padding: 20px;
+  margin: 10px;
+  padding: 10px;
 
   font-family: "Nunito", Helvetica, Arial, sans-serif;
   font-weight: 700;
