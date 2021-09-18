@@ -3,13 +3,7 @@ import { createStore, Store } from "vuex";
 
 export const store = createStore({
   state: {
-    user: {
-      username: String,
-      email: String,
-      id: Number,
-      role: String,
-      token: String
-    } 
+    user: null 
   },
   mutations: {
     SET_USER(state, payload) {

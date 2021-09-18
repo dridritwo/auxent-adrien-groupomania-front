@@ -7,7 +7,7 @@ const route = useRoute()
 const router = useRouter()
 
 function go() {
-  store.commit("SET_USER", {});
+  store.commit("SET_USER", null);
   localStorage.removeItem("USER");
   router.push("/")
 }

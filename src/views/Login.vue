@@ -9,8 +9,6 @@ const route = useRoute();
 const router = useRouter();
 const store = useStore();
 
-const user = computed(() => store.state.user);
-const formatedUser = computed(() => store.getters.formattedUser);
 
 const formData = ref({
   email: "",
@@ -18,9 +16,7 @@ const formData = ref({
 });
 
 async function submit() {
-  let response: UserModel = await logUser(formData.value);
-  store.commit("SET_USER", response);
-  localStorage.setItem("USER", JSON.stringify(response));
+  let response = await logUser(formData.value);
   router.push("/home");
 }
 function goBack() {

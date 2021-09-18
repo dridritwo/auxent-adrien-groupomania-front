@@ -3,7 +3,9 @@ import ButtonBig from '@/components/buttons/ButtonBig.vue';
 import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 import { useStore } from 'vuex'
 import {onMounted} from 'vue'
+import { useRouter, useRoute } from "vue-router";
 const store = useStore()
+const router = useRouter();
 
 onMounted(()=>{
   

@@ -15,7 +15,7 @@ async function delUser() {
   if (response.ok) {
     success.value = true;
     setTimeout(function () {
-      store.commit("SET_USER", {});
+      store.commit("SET_USER", null);
       localStorage.removeItem("USER");
       router.push("/")
     }, 1000);

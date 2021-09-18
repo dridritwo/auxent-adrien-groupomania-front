@@ -18,9 +18,7 @@ const formData = ref({
 });
 
 async function submit() {
-  let response = await signUpUser(formData.value);
-  store.commit("SET_USER", response);
-  localStorage.setItem("USER", JSON.stringify(response));
+  await signUpUser(formData.value);
   router.push("/home");
 }
 

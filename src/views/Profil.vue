@@ -9,22 +9,25 @@ const route = useRoute();
 const router = useRouter();
 
 const store = useStore()
-const user = computed(() => store.state.user)
-const formatedUser = computed(() => store.getters.formattedUser)
-const userToken = computed(() => store.getters.userToken)
 
 onMounted(() => {
-
 })
+
+function goBack() {
+  router.go(-1)
+}
 </script>
 
 <template>
-  <div id="home">
+  <div v-if="store.state.user" id="home">
+    <button @click="goBack">Back</button>
+    <img class="profile-image" :src="`${store.state.user.avatar_url}`" alt="avatar" >
     
-      <div>name {{ user.username }}</div>
+      <div>name : {{ store.state.user.username }}</div>
+      <div>email : {{ store.state.user.email }}</div>
+      <div>avatar_url : {{ store.state.user.avatar_url }}</div>
       <ButtonLogOut />
       <ButtonDeleteUser />
-      <img :src="`${user.avatar_url}`" alt="avatar" >
   </div>
 </template>
 
