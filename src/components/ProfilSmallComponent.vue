@@ -5,7 +5,6 @@ import { useStore } from "vuex";
 import IconHome from "../assets/IconHome.vue";
 import IconFire from "../assets/IconFire.vue";
 import IconAdd from "../assets/IconAdd.vue";
-import ProfilSmallComponent from "./ProfilSmallComponent.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -19,21 +18,37 @@ onMounted(() => {});
 </script>
 
 <template>
-  <header>
-    <ProfilSmallComponent />
-    <IconHome @click="go(`/home`)" />
-    <IconFire />
-    <IconAdd />
-  </header>
+ <div class="profile-small">
+
+   <img
+      class="profile-image link"
+      @click="go(`/profil`)"
+      :src="`${store.state.user.avatar_url}`"
+      alt="avatar"
+    />
+    <div class="profil-infos">
+      <h3>{{store.state.user.username}}</h3>
+      <p>{{store.state.user.email}}</p>
+    </div>
+ </div>
 </template>
 
 <style lang="scss" scoped>
-header {
-  width: 100%;
-  height: 60px;
-  background-color: white;
+.profile-small {
+  width: 50%;
+  height: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   align-items: center;
+  .profil-infos {
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    font-size: x-small;
+    h2 {
+      margin: 0;
+    }
+  }
 }
 </style>
