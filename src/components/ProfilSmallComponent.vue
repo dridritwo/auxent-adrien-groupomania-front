@@ -18,11 +18,11 @@ onMounted(() => { });
 </script>
 
 <template>
-  <div class="profile-small">
+  <div v-if="store.state.user" class="profile-small">
     <img
       class="profile-image link"
       @click="go(`/profil`)"
-      :src="`${store.state.user.avatar_url}`"
+      :src=store.state.user.avatar_url
       alt="avatar"
     />
     <div class="profil-infos">
