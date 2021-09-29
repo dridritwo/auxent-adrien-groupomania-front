@@ -1,4 +1,4 @@
-import { FormDataModel } from "../models/FormDataModel";
+import { FormDataModel, EditProfileFormDataModel } from "../models/FormDataModel";
 import { UserModel } from "../models/UserModel";
 import store from "../store/index";
 
@@ -91,5 +91,41 @@ export async function deleteUser(id, token) {
     .catch((error) => {
       console.log(error);
     });
+  return response;
+}
+
+// localhost:3000/api/v1/users/id/1
+export async function updateUser(formData: EditProfileFormDataModel) {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", `Bearer ${store.state.user.token}`);
+  let response: Boolean = await fetch(
+    `http://localhost:3000/api/v1/users/id/${store.state.user.id}`,
+    {
+      method: "PATCH",
+      headers: myHeaders,
+      body: JSON.stringify({
+        email: store.state.user.email,
+        username: formData.username,
+        avatar_url: formData.avatar_url
+      }),
+    }
+  )
+    .then((response) => {
+      if (response.ok) {
+        let payload = { ...store.state.user}
+        payload.username = formData.username
+        payload.avatar_url = formData.avatar_url
+        store.commit("SET_USER", payload);
+        localStorage.setItem("USER", JSON.stringify(payload));
+        return response.ok;
+      } else {
+        return false;
+      }
+    })
+    .catch((error) => {
+      return false
+    });
+
   return response;
 }

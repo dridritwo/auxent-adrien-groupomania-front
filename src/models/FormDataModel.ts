@@ -3,3 +3,8 @@ export type FormDataModel = {
     email: String,
     password: String
 }
+
+export type EditProfileFormDataModel = {
+    username: String,
+    avatar_url: String
+}

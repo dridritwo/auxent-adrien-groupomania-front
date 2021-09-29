@@ -3,11 +3,12 @@ import { useStore } from 'vuex'
 import { onMounted, computed } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 
-import ButtonLogOut from '@/components/buttons/ButtonLogOut.vue';
+import ButtonLogOut from '../components/buttons/ButtonLogOut.vue';
 import ButtonDeleteUser from '@/components/buttons/ButtonDeleteUser.vue';
 import ArrowLeft from '../assets/ArrowLeft.vue';
 import HeaderComponent from '../components/HeaderComponent.vue';
 import ProfilInfoComponent from '../components/ProfilInfoComponent.vue';
+import ButtonMedium from '../components/buttons/ButtonMedium.vue';
 const route = useRoute();
 const router = useRouter();
 
@@ -29,6 +30,7 @@ function goBack() {
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
     <ProfilInfoComponent />
+    <ButtonMedium text="edit" routeUrl="profil-edit" />
     <ButtonLogOut />
     <ButtonDeleteUser />
   </div>

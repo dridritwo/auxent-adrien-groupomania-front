@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import HomeNotLogged from "@/views/HomeNotLogged.vue";
 import Home from "@/views/home.vue";
 import Profil from "@/views/Profil.vue";
+import ProfilEdit from "@/views/ProfilEdit.vue";
 import Login from "@/views/Login.vue";
 import Signup from "@/views/Signup.vue";
 import GetUsers from "@/views/GetUsers.vue";
@@ -37,6 +38,18 @@ const routes = [
     path: "/profil",
     name: "Profil",
     component: Profil,
+    beforeEnter: (to, from, next) => {
+      if (userIsLogged()) {
+        next();
+      } else {
+        router.push("/");
+      }
+    },
+  },
+  {
+    path: "/profil-edit",
+    name: "ProfilEdit",
+    component: ProfilEdit,
     beforeEnter: (to, from, next) => {
       if (userIsLogged()) {
         next();

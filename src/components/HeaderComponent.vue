@@ -15,6 +15,12 @@ function go(slug: string) {
   router.push(slug);
 }
 
+const props = defineProps({
+  username: String,
+  email: String,
+  avatar_url: String
+})
+
 onMounted(() => {});
 </script>
 
