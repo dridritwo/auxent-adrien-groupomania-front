@@ -1,6 +1,7 @@
 import { FormDataModel, EditProfileFormDataModel } from "../models/FormDataModel";
 import { UserModel } from "../models/UserModel";
 import store from "../store/index";
+import axios from 'axios';
 
 export async function getUsersService() {
   let myHeaders = new Headers();
@@ -99,32 +100,31 @@ export async function updateUser(formData: EditProfileFormDataModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${store.state.user.token}`);
-  let response: Boolean = await fetch(
+  let response: any = await axios.patch(
     `http://localhost:3000/api/v1/users/id/${store.state.user.id}`,
     {
-      method: "PATCH",
-      headers: myHeaders,
-      body: JSON.stringify({
         email: store.state.user.email,
         username: formData.username,
         avatar_url: formData.avatar_url
-      }),
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${store.state.user.token}` 
+      }
     }
   )
     .then((response) => {
-      if (response.ok) {
+      
         let payload = { ...store.state.user}
         payload.username = formData.username
         payload.avatar_url = formData.avatar_url
         store.commit("SET_USER", payload);
         localStorage.setItem("USER", JSON.stringify(payload));
-        return response.ok;
-      } else {
-        return false;
-      }
+        return response;
+      
     })
     .catch((error) => {
-      return false
+      return error.response.data.errors;
     });
 
   return response;

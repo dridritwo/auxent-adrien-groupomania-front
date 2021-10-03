@@ -24,7 +24,7 @@ const formData = ref({
 const showUrl = ref(false);
 const focus = ref(null);
 const success = ref(false);
-const error = ref(false);
+const errors = ref(null);
 
   onMounted(() => {
     nextTick(() => {
@@ -38,15 +38,16 @@ function goBack() {
 
 async function handleSubmit() {
   let response = await updateUser(formData.value);
-  if (response) {
+  console.log("hhh", response)
+  if (response.statusText === "OK") {
     success.value = true
     setTimeout(function () {
       success.value = false
     }, 2000);
   } else {
-    error.value = true
+    errors.value = response
     setTimeout(function () {
-      error.value = false
+      errors.value = null
     }, 2000);
   }
 }
@@ -58,7 +59,7 @@ async function handleSubmit() {
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
       <div v-if="store.state.user"  id="profil">
-        <div :class="{ 'success-border': success, 'error-border': error }" class="infos-container">
+        <div :class="{ 'success-border': success, 'error-border': errors }" class="infos-container">
           <img
             @click="showUrl=!showUrl"
             class="profil-image clickable"
@@ -83,7 +84,7 @@ async function handleSubmit() {
             <p>{{ store.state.user.email }}</p>
           </div>
           <div v-if="success" class="success-div">Sauvegarde effectuée</div>
-          <div v-if="error" class="error-div">Erreur lors de la sauvegarde</div>
+          <div v-if="errors" v-for="(error, index) in errors" :key="index" class="error-div">Erreur lors de la sauvegarde : {{error.msg }}</div>
         </div>
       </div>
     <button type="submit" @click="handleSubmit">Envoyer</button>
