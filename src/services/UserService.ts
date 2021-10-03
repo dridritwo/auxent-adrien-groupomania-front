@@ -123,7 +123,6 @@ export async function updateUser(formData: EditProfileFormDataModel) {
       
     })
     .catch((error) => {
-      console.log("error.response.data :", error.response.data)
       let errors = []
       if (error.response.data.status === 409) {
         errors.push({msg: error.response.data.message})

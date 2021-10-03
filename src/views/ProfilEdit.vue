@@ -74,10 +74,13 @@ async function handleSubmit() {
         <div v-if="success" class="success-div">Sauvegarde effectuée</div>
         <div
           v-if="errors"
-          v-for="(error, index) in errors"
-          :key="index"
           class="error-div"
-        >Erreur lors de la sauvegarde : {{ error.msg }}</div>
+        >Erreur lors de la sauvegarde : 
+        <div v-for="(error, index) in errors"
+          :key="index">
+          - {{ error.msg }}
+        </div>
+        </div>
       </div>
     </div>
     <button type="submit" @click="handleSubmit">Envoyer</button>
