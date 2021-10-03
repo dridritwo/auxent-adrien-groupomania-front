@@ -1,7 +1,6 @@
-import { FormDataModel, EditProfileFormDataModel } from "../models/FormDataModel";
 import { UserModel } from "../models/UserModel";
 import store from "../store/index";
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export async function getUsersService() {
   let myHeaders = new Headers();
@@ -24,7 +23,7 @@ export async function getUsersService() {
   return result;
 }
 
-export async function logUser(formData: FormDataModel) {
+export async function logUser(formData: UserModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   let response: UserModel = await fetch(
@@ -51,7 +50,7 @@ export async function logUser(formData: FormDataModel) {
   return response;
 }
 
-export async function signUpUser(formData: FormDataModel) {
+export async function signUpUser(formData: UserModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   let response = await fetch("http://localhost:3000/api/v1/users", {
@@ -96,7 +95,7 @@ export async function deleteUser(id, token) {
 }
 
 // localhost:3000/api/v1/users/id/1
-export async function updateUser(formData: EditProfileFormDataModel) {
+export async function updateUser(formData: UserModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${store.state.user.token}`);
@@ -134,6 +133,5 @@ export async function updateUser(formData: EditProfileFormDataModel) {
       }
       return errors;
     });
-
   return response;
 }

@@ -6,9 +6,7 @@ import { useRouter, useRoute } from "vue-router";
 import ArrowLeft from "../assets/ArrowLeft.vue";
 import HeaderComponent from "../components/HeaderComponent.vue";
 import { updateUser } from "../services/UserService";
-const route = useRoute();
 const router = useRouter();
-
 const store = useStore();
 
 const formData = ref({
@@ -16,7 +14,6 @@ const formData = ref({
   username: store.state.user.username,
   email: store.state.user.email,
 });
-
 
 const showUrl = ref(false);
 const focus = ref(null);
@@ -35,17 +32,68 @@ function goBack() {
 
 async function handleSubmit() {
   errors.value = null;
-  let response = await updateUser(formData.value);
-  if (response.statusText === "OK") {
-    success.value = true
-    setTimeout(function () {
-      success.value = false
-    }, 2000);
+  if (checkFormData()) {
+    let response = await updateUser(formData.value);
+    if (response.statusText === "OK") {
+      success.value = true;
+      setTimeout(function () {
+        success.value = false;
+      }, 2000);
+    } else {
+      errors.value = response;
+    }
+  }
+}
+function checkFormData() {
+  if (
+    validationErrors.value.username.length ||
+    validationErrors.value.email.length ||
+    validationErrors.value.avatar_url.length
+  ) {
+    return false;
   } else {
-    errors.value = response
+    return true;
   }
 }
 
+const validationErrors = ref({
+  username: [],
+  email: [],
+  avatar_url: [],
+});
+function checkUsername() {
+  validationErrors.value.username = [];
+  if (formData.value.username.length < 3) {
+    validationErrors.value.username.push(
+      "Nom d'utilisateur doit avoir au moins trois caractères"
+    );
+  }
+}
+
+function checkEmail() {
+  validationErrors.value.email = [];
+  if (formData.value.email.length < 1) {
+    validationErrors.value.email.push("Email obligatoire");
+  }
+
+  const emailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!emailRegex.test(String(formData.value.email).toLowerCase())) {
+    validationErrors.value.email.push("Email doit être valide");
+  }
+}
+
+function checkAvatarUrl() {
+  validationErrors.value.avatar_url = [];
+  if (formData.value.avatar_url.length < 1) {
+    validationErrors.value.avatar_url.push("Avatar obligatoire");
+  }
+  if (formData.value.avatar_url.substring(0, 4) !== "http") {
+    validationErrors.value.avatar_url.push(
+      "Veuillez fournir une url"
+    );
+  }
+}
 </script>
 
 <template>
@@ -53,7 +101,10 @@ async function handleSubmit() {
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
     <div v-if="store.state.user" id="profil">
-      <div :class="{ 'success-border': success, 'error-border': errors }" class="infos-container">
+      <div
+        :class="{ 'success-border': success, 'error-border': errors }"
+        class="infos-container"
+      >
         <img
           @click="showUrl = !showUrl"
           class="profil-image clickable"
@@ -63,23 +114,61 @@ async function handleSubmit() {
         <div class="infos">
           <input
             v-if="showUrl"
+            :class="{ 'error-input': validationErrors.username.length }"
+            @keyup="checkAvatarUrl()"
             class="inputs"
             type="avatar_url"
             name="avatar_url"
             v-model="formData.avatar_url"
           />
-          <input class="h1" type="username" name="username" v-model="formData.username" ref="focus" />
-          <input class="p" type="email" name="email" v-model="formData.email" />
+          <div
+            v-if="validationErrors.avatar_url.length"
+            v-for="(error, index) in validationErrors.avatar_url"
+            :key="index"
+            class="validation"
+          >
+            {{ error }}
+          </div>
+          <input
+            :class="{ 'error-input': validationErrors.username.length }"
+            @keyup="checkUsername"
+            class="h1"
+            type="username"
+            name="username"
+            v-model="formData.username"
+            ref="focus"
+          />
+          <div
+            v-if="validationErrors.username.length"
+            v-for="(error, index) in validationErrors.username"
+            :key="index"
+            class="validation"
+          >
+            {{ error }}
+          </div>
+          <input
+            :class="{ 'error-input': validationErrors.email.length }"
+            @keyup="checkEmail"
+            class="p"
+            type="email"
+            name="email"
+            v-model="formData.email"
+          />
+          <div
+            v-if="validationErrors.email.length"
+            v-for="(error, index) in validationErrors.email"
+            :key="index"
+            class="validation"
+          >
+            {{ error }}
+          </div>
         </div>
         <div v-if="success" class="success-div">Sauvegarde effectuée</div>
-        <div
-          v-if="errors"
-          class="error-div"
-        >Erreur lors de la sauvegarde : 
-        <div v-for="(error, index) in errors"
-          :key="index">
-          - {{ error.msg }}
-        </div>
+        <div v-if="errors" class="error-div">
+          Erreur lors de la sauvegarde :
+          <div v-for="(error, index) in errors" :key="index">
+            - {{ error.msg }}
+          </div>
         </div>
       </div>
     </div>
@@ -113,7 +202,6 @@ button {
   border: none;
   margin: 10px;
   padding: 10px;
-
   font-family: "Nunito", Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 36px;
@@ -197,6 +285,13 @@ button {
 }
 .error-border {
   border: 5px solid $fifth;
+}
+
+.error-input {
+  border: 1px solid $fifth;
+}
+.validation {
+  color: $fifth;
 }
 .error-div {
   color: $fifth;
