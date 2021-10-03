@@ -39,6 +39,10 @@ onMounted(() => { });
   display: flex;
   justify-content: start;
   align-items: center;
+  img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
   .profil-infos {
     text-align: left;
     white-space: nowrap;

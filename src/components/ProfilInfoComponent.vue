@@ -54,6 +54,8 @@ onMounted(() => {
       background-color: black;
       border-radius: 50%;
       border: $secondary solid 5px;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
     }
     .infos {
       display: flex;

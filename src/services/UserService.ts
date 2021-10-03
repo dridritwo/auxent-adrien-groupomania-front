@@ -103,10 +103,9 @@ export async function updateUser(formData: EditProfileFormDataModel) {
   let response: any = await axios.patch(
     `http://localhost:3000/api/v1/users/id/${store.state.user.id}`,
     {
-        email: store.state.user.email,
+        email: formData.email,
         username: formData.username,
         avatar_url: formData.avatar_url
-      
     }, {
       headers: {
         'Authorization': `Bearer ${store.state.user.token}` 
@@ -114,17 +113,27 @@ export async function updateUser(formData: EditProfileFormDataModel) {
     }
   )
     .then((response) => {
-      
         let payload = { ...store.state.user}
         payload.username = formData.username
         payload.avatar_url = formData.avatar_url
+        payload.email = formData.email
         store.commit("SET_USER", payload);
         localStorage.setItem("USER", JSON.stringify(payload));
         return response;
       
     })
     .catch((error) => {
-      return error.response.data.errors;
+      console.log("error.response.data :", error.response.data)
+      let errors = []
+      if (error.response.data.status === 409) {
+        errors.push({msg: error.response.data.message})
+      }
+      if (error.response.data.errors) {
+        error.response.data.errors.forEach(error => {
+          errors.push(error)
+        });
+      }
+      return errors;
     });
 
   return response;

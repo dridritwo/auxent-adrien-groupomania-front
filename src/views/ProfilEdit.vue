@@ -1,14 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { useStore } from "vuex";
-import { onMounted, computed, ref, nextTick } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-import ButtonLogOut from "../components/buttons/ButtonLogOut.vue";
-import ButtonDeleteUser from "@/components/buttons/ButtonDeleteUser.vue";
 import ArrowLeft from "../assets/ArrowLeft.vue";
 import HeaderComponent from "../components/HeaderComponent.vue";
-import ProfilInfoComponent from "../components/ProfilInfoComponent.vue";
-import ButtonMedium from "../components/buttons/ButtonMedium.vue";
 import { updateUser } from "../services/UserService";
 const route = useRoute();
 const router = useRouter();
@@ -18,6 +14,7 @@ const store = useStore();
 const formData = ref({
   avatar_url: store.state.user.avatar_url,
   username: store.state.user.username,
+  email: store.state.user.email,
 });
 
 
@@ -26,19 +23,19 @@ const focus = ref(null);
 const success = ref(false);
 const errors = ref(null);
 
-  onMounted(() => {
-    nextTick(() => {
-      focus.value.focus();
-    });
+onMounted(() => {
+  nextTick(() => {
+    focus.value.focus();
   });
+});
 
 function goBack() {
   router.go(-1);
 }
 
 async function handleSubmit() {
+  errors.value = null;
   let response = await updateUser(formData.value);
-  console.log("hhh", response)
   if (response.statusText === "OK") {
     success.value = true
     setTimeout(function () {
@@ -46,9 +43,6 @@ async function handleSubmit() {
     }, 2000);
   } else {
     errors.value = response
-    setTimeout(function () {
-      errors.value = null
-    }, 2000);
   }
 }
 
@@ -58,35 +52,34 @@ async function handleSubmit() {
   <div v-on:keyup.enter="handleSubmit" class="profil-container">
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
-      <div v-if="store.state.user"  id="profil">
-        <div :class="{ 'success-border': success, 'error-border': errors }" class="infos-container">
-          <img
-            @click="showUrl=!showUrl"
-            class="profil-image clickable"
-            :src="`${formData.avatar_url}`"
-            alt="avatar"
-          />
-          <div class="infos">
-            <input
+    <div v-if="store.state.user" id="profil">
+      <div :class="{ 'success-border': success, 'error-border': errors }" class="infos-container">
+        <img
+          @click="showUrl = !showUrl"
+          class="profil-image clickable"
+          :src="`${formData.avatar_url}`"
+          alt="avatar"
+        />
+        <div class="infos">
+          <input
             v-if="showUrl"
-              class="inputs"
-              type="avatar_url"
-              name="avatar_url"
-              v-model="formData.avatar_url"
-            />
-            <input
-              class="h1"
-              type="username"
-              name="username"
-              v-model="formData.username"
-              ref="focus"
-            />
-            <p>{{ store.state.user.email }}</p>
-          </div>
-          <div v-if="success" class="success-div">Sauvegarde effectuée</div>
-          <div v-if="errors" v-for="(error, index) in errors" :key="index" class="error-div">Erreur lors de la sauvegarde : {{error.msg }}</div>
+            class="inputs"
+            type="avatar_url"
+            name="avatar_url"
+            v-model="formData.avatar_url"
+          />
+          <input class="h1" type="username" name="username" v-model="formData.username" ref="focus" />
+          <input class="p" type="email" name="email" v-model="formData.email" />
         </div>
+        <div v-if="success" class="success-div">Sauvegarde effectuée</div>
+        <div
+          v-if="errors"
+          v-for="(error, index) in errors"
+          :key="index"
+          class="error-div"
+        >Erreur lors de la sauvegarde : {{ error.msg }}</div>
       </div>
+    </div>
     <button type="submit" @click="handleSubmit">Envoyer</button>
     <button @click="goBack">Annuler</button>
   </div>
@@ -149,6 +142,8 @@ button {
       background-color: black;
       border-radius: 50%;
       border: $secondary solid 5px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
     }
     .infos {
       display: flex;
@@ -176,6 +171,13 @@ button {
   font-size: xx-large;
   font-weight: bold;
   color: black;
+}
+.p {
+  width: 100%;
+  border: none;
+  font-family: "Nunito", Helvetica, Arial, sans-serif;
+  background-color: transparent;
+  font-size: large;
 }
 .inputs {
   width: 100%;

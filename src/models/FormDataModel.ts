@@ -6,5 +6,6 @@ export type FormDataModel = {
 
 export type EditProfileFormDataModel = {
     username: String,
-    avatar_url: String
+    avatar_url: String,
+    email: String
 }

@@ -4,7 +4,7 @@ import { onMounted, computed } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 
 import ButtonLogOut from '../components/buttons/ButtonLogOut.vue';
-import ButtonDeleteUser from '@/components/buttons/ButtonDeleteUser.vue';
+import ButtonDeleteUser from '../components/buttons/ButtonDeleteUser.vue';
 import ArrowLeft from '../assets/ArrowLeft.vue';
 import HeaderComponent from '../components/HeaderComponent.vue';
 import ProfilInfoComponent from '../components/ProfilInfoComponent.vue';
