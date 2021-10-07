@@ -18,7 +18,7 @@ onMounted(() => {
 <template>
     <div v-if="store.state.user" id="profil">
       <div class="infos-container">
-        <img class="profil-image" :src="`${store.state.user.avatar_url}`" alt="avatar" />
+        <img class="profil-image" :src="store.state.user.avatar_url" alt="avatar" />
         <div class="infos">
           <h1>{{ store.state.user.username }}</h1>
           <p>{{ store.state.user.email }}</p>

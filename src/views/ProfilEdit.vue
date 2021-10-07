@@ -108,7 +108,7 @@ function checkAvatarUrl() {
         <img
           @click="showUrl = !showUrl"
           class="profil-image clickable"
-          :src="`${formData.avatar_url}`"
+          :src="formData.avatar_url"
           alt="avatar"
         />
         <div class="infos">
@@ -173,7 +173,7 @@ function checkAvatarUrl() {
       </div>
     </div>
     <button type="submit" @click="handleSubmit">Envoyer</button>
-    <button @click="goBack">Annuler</button>
+    <button @click="goBack">Retour</button>
   </div>
 </template>
 
