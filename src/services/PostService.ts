@@ -7,7 +7,9 @@ export async function getAllPosts(): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
+      
     },
+    params: { page: 0, limit: 5 }
   };
   let response: Post[] = await axios
     .get(`http://localhost:3000/api/v1/posts`, config)
@@ -16,6 +18,25 @@ export async function getAllPosts(): Promise<Post[]> {
     })
     .catch((error) => {
       console.log("error : ", error);
+      return null;
+    });
+  return response;
+}
+
+export async function getMorePosts(page: number): Promise<Post[]> {
+  console.log("page ins service", page)
+  let config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`,
+    },
+    params: { page: page, limit: 5 }
+  };
+  let response: Post[] = await axios
+    .get(`http://localhost:3000/api/v1/posts`, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
       return null;
     });
   return response;
