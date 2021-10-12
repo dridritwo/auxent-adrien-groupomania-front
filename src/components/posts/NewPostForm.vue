@@ -1,74 +1,65 @@
 <script setup lang="ts">
-import { UserModel } from "../models/UserModel";
-import { ref } from "vue";
-import { useStore } from "vuex";
-import { computed } from "vue";
-import { logUser } from "../services/UserService";
-import { useRouter, useRoute } from "vue-router";
-import ArrowLeft from "../assets/ArrowLeft.vue";
-const route = useRoute();
-const router = useRouter();
-const store = useStore();
+import { ref, Ref } from "vue";
+import { sendPostForm } from "../../services/PostService";
+import { Post } from "../../models/PostModel";
 
-const formData = ref({
-  email: "",
-  password: "",
+const postForm: Ref<Post> = ref({
+  title: "",
+  text: "",
+  postImageUrl: "",
 });
 
 async function submit() {
-  let response = await logUser(formData.value);
-  router.push("/home");
+  let response = await sendPostForm(postForm.value);
+  console.log("here response : ", response);
 }
-function goBack() {
-  router.push("/");
-}
+
 </script>
 
 <template>
-  <div id="home">
-    <ArrowLeft class="top-left" @click="goBack" />
-    <div class="home-container">
+<div class="home-container">
       <div class="header-back">
         <div class="header">
-          <h1>Sign in</h1>
+          <h1>Nouveau poteau</h1>
         </div>
       </div>
       <div class="form-back">
         <form id="login-form" @submit.prevent="submit">
           <div class="inputs">
-            <label for="email">Email:</label>
+            <label for="title">Titre:</label>
             <input
               class="input"
-              type="email"
-              name="email"
-              v-model="formData.email"
-              placeholder="email"
+              type="text"
+              name="title"
+              v-model="postForm.title"
+              placeholder="Titre"
+              required
             />
-            <label for="password">Password:</label>
+            <label for="text">Votre message:</label>
             <input
               class="input"
-              type="password"
-              name="password"
-              v-model="formData.password"
-              placeholder="password"
+              type="text"
+              name="text"
+              v-model="postForm.text"
+              placeholder="Message"
+            />
+            <label for="imageUrl">Lien de votre image:</label>
+            <input
+              class="input"
+              type="url"
+              name="imageUrl"
+              v-model="postForm.postImageUrl"
+              placeholder="Lien de votre image/gif"
             />
           </div>
-
           <button class="button">Envoyer</button>
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <style lang="scss" scoped>
-#home {
-  background-color: $primary;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
   .home-container {
     max-width: $max-width-desk;
     background-color: $secondary;
@@ -77,6 +68,7 @@ function goBack() {
     border-radius: 10px;
     overflow: hidden;
     min-width: 300px;
+    margin-top: 30px;
 
     .header-back {
       background-color: $fourth;
@@ -122,7 +114,7 @@ function goBack() {
       }
     }
   }
-}
+
 .shadow {
   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }

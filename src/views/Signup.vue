@@ -65,7 +65,7 @@ function goBack() {
               placeholder="password"
             />
           </div>
-          <button class="button">Submit</button>
+          <button class="button">Envoyer</button>
         </form>
       </div>
     </div>

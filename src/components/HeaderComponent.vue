@@ -29,7 +29,7 @@ onMounted(() => {});
     <ProfilSmallComponent />
     <IconHome @click="go(`/home`)" />
     <IconFire />
-    <IconAdd />
+    <IconAdd @click="go(`/new-post`)" />
   </header>
 </template>
 

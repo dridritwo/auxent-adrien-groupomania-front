@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
 import HomeNotLogged from "@/views/HomeNotLogged.vue";
 import Home from "@/views/home.vue";
+import NewPost from "@/views/NewPost.vue";
 import Profil from "@/views/Profil.vue";
 import ProfilEdit from "@/views/ProfilEdit.vue";
 import Login from "@/views/Login.vue";
 import Signup from "@/views/Signup.vue";
-import GetUsers from "@/views/GetUsers.vue";
 import store from "@/store/index";
 import { computed } from "vue";
 
@@ -83,9 +83,16 @@ const routes = [
     },
   },
   {
-    path: "/getusers",
-    name: "getusers",
-    component: GetUsers,
+    path: "/new-post",
+    name: "NewPost",
+    component: NewPost,
+    beforeEnter: (to, from, next) => {
+      if (userIsLogged()) {
+        next();
+      } else {
+        router.push("/");
+      }
+    },
   },
 ];
 

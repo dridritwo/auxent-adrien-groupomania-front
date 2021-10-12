@@ -9,6 +9,7 @@ import ArrowLeft from '../assets/ArrowLeft.vue';
 import HeaderComponent from '../components/HeaderComponent.vue';
 import ProfilInfoComponent from '../components/ProfilInfoComponent.vue';
 import ButtonMedium from '../components/buttons/ButtonMedium.vue';
+import NewPostForm from '../components/posts/NewPostForm.vue';
 const route = useRoute();
 const router = useRouter();
 
@@ -27,10 +28,7 @@ function goBack() {
   <div class="profil-container">
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
-    <ProfilInfoComponent />
-    <ButtonMedium text="edit" routeUrl="profil-edit" />
-    <ButtonLogOut />
-    <ButtonDeleteUser />
+    <NewPostForm />
   </div>
 </template>
 
