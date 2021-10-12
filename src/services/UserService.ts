@@ -77,7 +77,7 @@ export async function deleteUser(id, token) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${token}`);
-  let response = await fetch(`http://localhost:3000/api/v1/users/id/${id}`, {
+  let response: Response = await fetch(`http://localhost:3000/api/v1/users/id/${id}`, {
     method: "DELETE",
     headers: myHeaders,
   })
@@ -90,6 +90,7 @@ export async function deleteUser(id, token) {
     })
     .catch((error) => {
       console.log(error);
+      return error
     });
   return response;
 }

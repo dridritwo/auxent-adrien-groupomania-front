@@ -1,13 +1,14 @@
-<script setup >
+<script setup lang="ts">
 import { onMounted } from "@vue/runtime-core";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import { getAllPosts } from "../../services/PostService";
+import { Post } from "../../models/PostModel";
 
 
 const store = useStore();
-const posts = ref([]);
+const posts: Ref<Post[]> = ref([]);
 
 onMounted(async () => {
   let allPosts = await getAllPosts();
@@ -18,12 +19,12 @@ onMounted(async () => {
 </script>
 
 <template>
-<div v-for="(post, index) in posts" :key="index" class="post-list">
+<div v-if="posts" v-for="(post) in posts" class="post-list">
   <div  class="post-header">
     <img :src="post.authorAvatarUrl" alt="author avatar" >
     <div class="post-info">
       <h1>{{post.authorName}}</h1>
-      <p>Posté le : {{ new Date(post.postCreationDate).toLocaleString('fr-FR')}}</p>
+      <p>Posté le : {{ post.postCreationDate.toLocaleString('fr-FR')}}</p>
     </div>
   </div>
   <div class="post-body">

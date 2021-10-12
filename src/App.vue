@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HomeNotLogged from '@/views/HomeNotLogged.vue'
 </script>
 

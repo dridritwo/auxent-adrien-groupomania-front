@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import {getUsersService} from '@/services/UserService'
+import {getUsersService} from '../services/UserService'
 
 const users = ref()
 

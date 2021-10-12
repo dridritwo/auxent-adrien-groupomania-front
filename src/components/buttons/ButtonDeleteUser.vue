@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from "vuex";
-import { deleteUser } from "@/services/UserService";
+import { deleteUser } from "../../services/UserService";
 import { ref } from "vue";
 
 const store = useStore();
@@ -11,7 +11,7 @@ const router = useRouter()
 const success = ref(false);
 
 async function delUser() {
-  let response = await deleteUser(store.state.user.id, store.state.user.token);
+  let response: Response = await deleteUser(store.state.user.id, store.state.user.token);
   if (response.ok) {
     success.value = true;
     setTimeout(function () {
