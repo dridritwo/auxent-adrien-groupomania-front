@@ -24,7 +24,7 @@ onMounted(async () => {
     <img :src="post.authorAvatarUrl" alt="author avatar" >
     <div class="post-info">
       <h1>{{post.authorName}}</h1>
-      <p>Posté le : {{ post.postCreationDate.toLocaleString('fr-FR')}}</p>
+      <p>Posté le : {{ new Date(post.postCreationDate).toLocaleString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "2-digit", minute: "2-digit", hour12: false })}}</p>
     </div>
   </div>
   <div class="post-body">
@@ -57,6 +57,8 @@ onMounted(async () => {
     img {
       height: 60px;
       width: 60px;
+      border-radius: 50%;
+      margin: 0 5px;
     }
   }
   .post-body {
