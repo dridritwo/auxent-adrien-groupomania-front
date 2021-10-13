@@ -5,6 +5,7 @@ import { useStore } from "vuex";
 import { ref, Ref, watch } from "vue";
 import { getAllPosts, getMorePosts } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
+import IconAboveFont1 from "../../assets/IconAboveFont1.vue";
 
 const store = useStore();
 const posts: Ref<Post[]> = ref([]);
@@ -67,12 +68,13 @@ function createObserver() {
 
 <template>
 <div class="list-container">
+  <IconAboveFont1 class="behind" />
 
   <div v-if="posts" v-for="post in posts" class="post-list">
     <div class="post-header">
       <img :src="post.authorAvatarUrl" alt="author avatar" />
       <div class="post-info">
-        <h1>{{ post.authorName }}</h1>
+        <h1>{{ post.title }}</h1>
         <p>
           Posté le :
           {{
@@ -85,12 +87,12 @@ function createObserver() {
               minute: "2-digit",
               hour12: false,
             })
-          }}
+          }} par {{post.authorName}}
         </p>
       </div>
     </div>
     <div class="post-body">
-      <img :src="post.postImageUrl" alt="post image" />
+      <img v-if="post.postImageUrl" :src="post.postImageUrl" alt="post image" />
       <p>{{ post.text }}</p>
     </div>
     <div class="post-footer"></div>
@@ -107,16 +109,25 @@ function createObserver() {
 <style lang="scss" scoped>
 .list-container {
   min-height: 100vh;
+  .behind {
+  position: fixed;
+  top: 90px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 0;
+}
 }
 .post-list {
   max-width: $max-width-desk;
-  margin: 10px auto;
+  margin: 0 auto 40px auto;
   box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.514);
   background-color: transparent;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  position: relative;
   .post-header {
     width: 100%;
     display: flex;
@@ -124,7 +135,7 @@ function createObserver() {
     align-items: center;
     gap: 10px;
     background-color: $fourth;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     text-align: left;
     img {
       height: 60px;
@@ -135,12 +146,14 @@ function createObserver() {
   }
   .post-body {
     width: 100%;
-    margin-bottom: 5px;
     img {
       width: 100%;
       max-height: 300px;
       object-fit: contain;
     }
+  }
+  .post-body, .post-footer {
+    background-color: $primary;
   }
 }
 #chargement {
@@ -153,4 +166,6 @@ function createObserver() {
     cursor: pointer;
   }
 }
+
+
 </style>

@@ -42,11 +42,11 @@ export async function getMorePosts(page: number): Promise<Post[]> {
   return response;
 }
 
-// localhost:3000/api/v1/posts/id/1
-export async function sendPostForm(postForm: Post) {
+// localhost:3000/api/v1/posts/
+export async function sendPostForm(postForm: Post): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     method: "post",
-    url: `http://localhost:3000/api/v1/posts/id/${store.state.user.id}`,
+    url: `http://localhost:3000/api/v1/posts/`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
@@ -56,12 +56,12 @@ export async function sendPostForm(postForm: Post) {
       image_url: postForm.postImageUrl,
     },
   };
-  let response: any = await axios(config)
-    .then((response: AxiosResponse<any>) => {
+  let response: Post[] | null = await axios(config)
+    .then((response: AxiosResponse) => {
       return response.data;
     })
     .catch((error: AxiosError) => {
-      return error;
+      return null;
     });
   return response;
 }
