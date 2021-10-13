@@ -2,8 +2,8 @@
 import { onMounted } from "@vue/runtime-core";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { ref, Ref, watch } from "vue";
-import { getAllPosts, getMorePosts } from "../../services/PostService";
+import { onBeforeUnmount, onDeactivated, ref, Ref, watch } from "vue";
+import { getAllPostsByAuthorId } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
 import IconAboveFont1 from "../../assets/IconAboveFont1.vue";
 import PostComponent from "./PostComponent.vue";
@@ -14,9 +14,8 @@ const sentinal: Ref<Element> = ref();
 const isIntersectingElement: Ref<Boolean> = ref(false);
 const isLoading: Ref<Boolean> = ref(false);
 const currentPage: Ref<number> = ref(0);
-const lastKnownScrollPosition: Ref<number> = ref(0);
-const ticking: Ref<Boolean> = ref(false);
 const poto: Ref<string> = ref("Chargement des poteaux...");
+let observer: IntersectionObserver;
 
 watch(isIntersectingElement, async (isIntersecting, prevCount) => {
   if (isIntersecting && !isLoading.value) {
@@ -26,7 +25,7 @@ watch(isIntersectingElement, async (isIntersecting, prevCount) => {
 
 onMounted(async () => {
   isLoading.value = true;
-  let allPosts = await getAllPosts();
+  let allPosts = await getAllPostsByAuthorId(store.state.user.id, 0);
   await allPosts.forEach((post) => {
     posts.value.push(post);
   });
@@ -37,7 +36,10 @@ onMounted(async () => {
 async function goGetMorePosts() {
   isLoading.value = true;
   currentPage.value = currentPage.value + 1;
-  let morePosts = await getMorePosts(currentPage.value);
+  let morePosts = await getAllPostsByAuthorId(
+    store.state.user.id,
+    currentPage.value
+  );
   if (!morePosts.length) {
     poto.value = "Il n'y a plus de poteaux.";
   } else {
@@ -49,23 +51,25 @@ async function goGetMorePosts() {
 }
 
 function createObserver() {
-  const handler = (entries) => {
+  const handler = (entries: { isIntersecting: any }[]) => {
     if (entries[0].isIntersecting) {
       isIntersectingElement.value = true;
     } else {
       isIntersectingElement.value = false;
     }
   };
-  const observer = new window.IntersectionObserver(handler);
+  observer = new window.IntersectionObserver(handler);
   observer.observe(sentinal.value);
 }
 </script>
 
 <template>
   <div class="list-container">
-    <IconAboveFont1 class="behind" />
-
-    <div v-if="posts" v-for="post in posts" class="post-list">
+    <div
+      v-if="posts && store.state.user"
+      v-for="post in posts"
+      class="post-list"
+    >
       <PostComponent
         :title="post.title"
         :id="post.id"

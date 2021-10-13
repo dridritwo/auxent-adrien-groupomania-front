@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import HomeNotLogged from "@/views/HomeNotLogged.vue";
 import Home from "@/views/home.vue";
 import NewPost from "@/views/NewPost.vue";
+import UpdatePost from "@/views/UpdatePost.vue";
 import Profil from "@/views/Profil.vue";
 import ProfilEdit from "@/views/ProfilEdit.vue";
 import Login from "@/views/Login.vue";
@@ -86,6 +87,18 @@ const routes = [
     path: "/new-post",
     name: "NewPost",
     component: NewPost,
+    beforeEnter: (to, from, next) => {
+      if (userIsLogged()) {
+        next();
+      } else {
+        router.push("/");
+      }
+    },
+  },
+  {
+    path: "/update-post",
+    name: "UpdatePost",
+    component: UpdatePost,
     beforeEnter: (to, from, next) => {
       if (userIsLogged()) {
         next();

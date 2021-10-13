@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
-import { sendPostForm } from "../../services/PostService";
+import { onMounted, ref, Ref } from "vue";
+import { updatePost } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { AxiosError, AxiosResponse } from "axios";
 
 const router = useRouter();
+const route = useRoute();
 
 const postForm: Ref<Post> = ref({
-  title: "",
-  text: "",
-  postImageUrl: "",
+  title: route.params.title.toString(),
+  text: route.params.text.toString(),
+  postImageUrl: route.params.postImageUrl.toString(),
+  id: parseInt(route.params.id.toString(), 10)
 });
 const success: Ref<Boolean> = ref(false);
 const errors: Ref<Boolean> = ref(false);
@@ -20,7 +22,7 @@ async function submit() {
   errors.value = false;
   success.value = false;
   isLoading.value = true;
-  let response: Post[] = await sendPostForm(postForm.value);
+  let response: Post[] = await updatePost(postForm.value);
   if (response) {
     success.value = true;
     setTimeout(function () {
@@ -37,7 +39,7 @@ async function submit() {
   <div class="home-container">
     <div class="header-back">
       <div class="header">
-        <h1>Nouveau poteau</h1>
+        <h1>Editer</h1>
       </div>
     </div>
     <div class="form-back">

@@ -19,11 +19,21 @@ const props = defineProps({
 });
 
 
-onMounted(async () => {});
+onMounted(async () => {
+});
 
 async function deleteIt() {
   await deletePost(props.id);
   router.go(0);
+}
+
+function updateIt() {
+  router.push({ name: 'UpdatePost', params: { 
+    title: props.title,
+    id: props.id,
+    text: props.text,
+    postImageUrl: props.postImageUrl
+    } })
 }
 </script>
 
@@ -31,7 +41,9 @@ async function deleteIt() {
   <div class="post-header">
     <img :src="authorAvatarUrl" alt="author avatar" />
     <div class="post-info">
-      <h1>{{ title }}</h1> <span id="delete-post" @click="deleteIt" v-if="store.state.user.role === 'admin' || authorId === store.state.user.id">Delete</span>
+      <h1>{{ title }}</h1> 
+      <span id="delete-post" @click="deleteIt" v-if="store.state.user.role === 'admin' || authorId === store.state.user.id">Supprimer</span>
+      <span id="update-post" @click="updateIt" v-if="store.state.user.role === 'admin' || authorId === store.state.user.id">Editer</span>
       <p>
         Posté le :
         {{
@@ -85,12 +97,13 @@ async function deleteIt() {
 .post-footer {
   background-color: $primary;
 }
-#delete-post {
+#delete-post, #update-post {
   cursor: pointer;
   color: $fifth;
   font-weight: bolder;
   background-color: white;
   border-radius: 5px;
   padding: 0 3px;
+  margin-right: 3px;
 }
 </style>
