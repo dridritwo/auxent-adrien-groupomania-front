@@ -6,6 +6,7 @@ import { ref, Ref, watch } from "vue";
 import { getAllPosts, getMorePosts } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
 import IconAboveFont1 from "../../assets/IconAboveFont1.vue";
+import PostComponent from "./PostComponent.vue";
 
 const store = useStore();
 const posts: Ref<Post[]> = ref([]);
@@ -18,9 +19,7 @@ const ticking: Ref<Boolean> = ref(false);
 const poto: Ref<string> = ref("Chargement des poteaux...");
 
 watch(isIntersectingElement, async (isIntersecting, prevCount) => {
-  console.log("there");
   if (isIntersecting && !isLoading.value) {
-    console.log("here");
     await goGetMorePosts();
   }
 });
@@ -37,19 +36,17 @@ onMounted(async () => {
   }, 2000);
 });
 
-
 async function goGetMorePosts() {
-isLoading.value = true;
-currentPage.value = currentPage.value + 1;
-let morePosts = await getMorePosts(currentPage.value);
-if (!morePosts) {
-  poto.value = "Il n'y a plus de poteaux."
-} else {
-
-  await morePosts.forEach((post) => {
-    posts.value.push(post);
-isLoading.value = false;
-});
+  isLoading.value = true;
+  currentPage.value = currentPage.value + 1;
+  let morePosts = await getMorePosts(currentPage.value);
+  if (!morePosts) {
+    poto.value = "Il n'y a plus de poteaux.";
+  } else {
+    await morePosts.forEach((post) => {
+      posts.value.push(post);
+      isLoading.value = false;
+    });
   }
 }
 
@@ -67,56 +64,42 @@ function createObserver() {
 </script>
 
 <template>
-<div class="list-container">
-  <IconAboveFont1 class="behind" />
+  <div class="list-container">
+    <IconAboveFont1 class="behind" />
 
-  <div v-if="posts" v-for="post in posts" class="post-list">
-    <div class="post-header">
-      <img :src="post.authorAvatarUrl" alt="author avatar" />
-      <div class="post-info">
-        <h1>{{ post.title }}</h1>
-        <p>
-          Posté le :
-          {{
-            new Date(post.postCreationDate).toLocaleString("fr-FR", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            })
-          }} par {{post.authorName}}
-        </p>
-      </div>
+    <div v-if="posts" v-for="post in posts" class="post-list">
+      <PostComponent
+        :title="post.title"
+        :id="post.id"
+        :authorAvatarUrl="post.authorAvatarUrl"
+        :authorName="post.authorName"
+        :authorId="post.authorId"
+        :postCreationDate="post.postCreationDate"
+        :text="post.text"
+        :postImageUrl="post.postImageUrl"
+      />
     </div>
-    <div class="post-body">
-      <img v-if="post.postImageUrl" :src="post.postImageUrl" alt="post image" />
-      <p>{{ post.text }}</p>
-    </div>
-    <div class="post-footer"></div>
   </div>
-      </div>
   <div id="chargement">
     <div @click="goGetMorePosts" id="poto">
-      {{poto}}
+      {{ poto }}
     </div>
-    </div>
+  </div>
   <div ref="sentinal"></div>
 </template>
 
 <style lang="scss" scoped>
 .list-container {
   min-height: 100vh;
+  padding-top: 55px;
   .behind {
-  position: fixed;
-  top: 90px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  z-index: 0;
-}
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 0;
+  }
 }
 .post-list {
   max-width: $max-width-desk;
@@ -152,7 +135,8 @@ function createObserver() {
       object-fit: contain;
     }
   }
-  .post-body, .post-footer {
+  .post-body,
+  .post-footer {
     background-color: $primary;
   }
 }
@@ -166,6 +150,4 @@ function createObserver() {
     cursor: pointer;
   }
 }
-
-
 </style>

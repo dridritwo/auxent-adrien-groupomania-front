@@ -17,14 +17,12 @@ export async function getAllPosts(): Promise<Post[]> {
       return response.data;
     })
     .catch((error) => {
-      console.log("error : ", error);
       return null;
     });
   return response;
 }
 
 export async function getMorePosts(page: number): Promise<Post[]> {
-  console.log("page ins service", page)
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
@@ -59,6 +57,25 @@ export async function sendPostForm(postForm: Post): Promise<Post[]> {
   let response: Post[] | null = await axios(config)
     .then((response: AxiosResponse) => {
       return response.data;
+    })
+    .catch((error: AxiosError) => {
+      return null;
+    });
+  return response;
+}
+
+// localhost:3000/api/v1/posts/id/1
+export async function deletePost(id: Number): Promise<AxiosResponse> {
+  let config: AxiosRequestConfig = {
+    method: "delete",
+    url: `http://localhost:3000/api/v1/posts/id/${id}`,
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`,
+    }
+  };
+  let response: AxiosResponse = await axios(config)
+    .then((response: AxiosResponse) => {
+      return response;
     })
     .catch((error: AxiosError) => {
       return null;

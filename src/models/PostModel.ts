@@ -1,10 +1,10 @@
 export type Post = {
     authorName?: string,
-    authorId?: string,
+    authorId?: number,
     authorAvatarUrl?: string,
     id?: number,
     title?: string,
     text?: string,
     postImageUrl?: string,
-    postCreationDate?: Date,
+    postCreationDate?: string,
 }
