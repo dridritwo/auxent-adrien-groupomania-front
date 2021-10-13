@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "@vue/runtime-core";
+import { computed, ref, Ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { deletePost } from "../../services/PostService";
@@ -17,10 +18,29 @@ const props = defineProps({
   postImageUrl: String,
   text: String,
 });
+const showAllText: Ref<Boolean> = ref(false);
+const showLessOrMore: Ref<String> = ref();
+const postHeader: Ref<Element> = ref();
 
-
-onMounted(async () => {
+const textComputed = computed(() => {
+  if (!showAllText.value) {
+    showLessOrMore.value = "Montrer plus";
+    return props.text.substring(0, 300);
+  } else {
+    showLessOrMore.value = "Montrer moins"
+    return props.text;
+  }
 });
+
+watch(showAllText, async (showAllText, prevValue) => {
+      window.scrollTo({
+  top: 89,
+  left: 0,
+  behavior: 'smooth'
+});
+});
+
+onMounted(async () => {});
 
 async function deleteIt() {
   await deletePost(props.id);
@@ -28,22 +48,40 @@ async function deleteIt() {
 }
 
 function updateIt() {
-  router.push({ name: 'UpdatePost', params: { 
-    title: props.title,
-    id: props.id,
-    text: props.text,
-    postImageUrl: props.postImageUrl
-    } })
+  router.push({
+    name: "UpdatePost",
+    params: {
+      title: props.title,
+      id: props.id,
+      text: props.text,
+      postImageUrl: props.postImageUrl,
+    },
+  });
 }
 </script>
 
 <template>
-  <div class="post-header">
+  <div ref="postHeader" class="post-header">
     <img :src="authorAvatarUrl" alt="author avatar" />
     <div class="post-info">
-      <h1>{{ title }}</h1> 
-      <span id="delete-post" @click="deleteIt" v-if="store.state.user.role === 'admin' || authorId === store.state.user.id">Supprimer</span>
-      <span id="update-post" @click="updateIt" v-if="store.state.user.role === 'admin' || authorId === store.state.user.id">Editer</span>
+      <h1>{{ title }}</h1>
+      <span
+        id="delete-post"
+        @click="deleteIt"
+        v-if="
+          store.state.user.role === 'admin' || authorId === store.state.user.id
+        "
+        >Supprimer</span
+      >
+      <span
+        id="update-post"
+        @click="updateIt"
+        v-if="
+          store.state.user.role === 'superAdmin' ||
+          authorId === store.state.user.id
+        "
+        >Editer</span
+      >
       <p>
         Posté le :
         {{
@@ -63,7 +101,11 @@ function updateIt() {
   </div>
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
-    <p>{{ text }}</p>
+    <p class="post-text">{{ textComputed }}</p>
+    <div class="button-contain">
+
+      <button @click="showAllText = !showAllText" v-if="props.text.length > 300" class="button-small">{{showLessOrMore}}</button>
+    </div>
   </div>
   <div class="post-footer"></div>
 </template>
@@ -92,12 +134,20 @@ function updateIt() {
     max-height: 300px;
     object-fit: contain;
   }
+  .post-text {
+    text-align: left;
+    width: 100%;
+    padding: 20px;
+    color: white;
+    white-space: pre-wrap;
+  }
 }
 .post-body,
 .post-footer {
   background-color: $primary;
 }
-#delete-post, #update-post {
+#delete-post,
+#update-post {
   cursor: pointer;
   color: $fifth;
   font-weight: bolder;

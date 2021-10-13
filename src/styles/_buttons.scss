@@ -12,3 +12,18 @@
     font-weight: 700;
     font-size: 36px;
   }
+
+  .button-small {
+    color: $primary;
+    background-color: $light-grey;
+    width: 200px;
+    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.35));
+    border-radius: 10px;
+    border: $secondary solid 2px;
+    margin: 15px;
+    padding: 5px;
+  
+    font-family: "Nunito", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+  }

@@ -55,13 +55,13 @@ async function submit() {
             required
           />
           <label for="text">Votre message:</label>
-          <input
+          <textarea
             class="input"
             type="text"
             name="text"
             v-model="postForm.text"
             placeholder="Message"
-          />
+          ></textarea>
           <label for="imageUrl">Lien de votre image:</label>
           <input
             class="input"
@@ -126,6 +126,9 @@ async function submit() {
         margin-bottom: 15px;
         text-align: start;
         font-size: large;
+      }
+      textarea {
+        width: 100%;
       }
       label {
         text-align: start;

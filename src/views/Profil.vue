@@ -29,9 +29,11 @@ function goBack() {
     <HeaderComponent />
     <ArrowLeft class="top-left-under" @click="goBack" />
     <ProfilInfoComponent />
-    <ButtonMedium text="edit" routeUrl="profil-edit" />
+    <div class="button-container">
+      <ButtonMedium text="edit" routeUrl="profil-edit" />
     <ButtonLogOut />
     <ButtonDeleteUser />
+    </div>
     <AllPostsByAuthorId />
   </div>
 </template>
@@ -50,5 +52,8 @@ function goBack() {
   position: absolute;
   top: 65px;
   left: 5px;
+}
+.button-container {
+  max-width: 500px;
 }
 </style>
