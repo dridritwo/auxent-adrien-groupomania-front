@@ -102,7 +102,7 @@ function updateIt() {
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
     <p class="post-text">{{ textComputed }}</p>
-    <div class="button-contain">
+    <div class="button-container">
 
       <button @click="showAllText = !showAllText" v-if="props.text.length > 300" class="button-small">{{showLessOrMore}}</button>
     </div>
