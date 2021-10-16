@@ -103,11 +103,13 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
   padding-top: 55px;
   .behind {
     position: fixed;
-    top: 90px;
+    top: 280px;
     left: 0;
     right: 0;
     margin: 0 auto;
     z-index: 0;
+    transform: scale(2.5);
+    
   }
 }
 .post-list {

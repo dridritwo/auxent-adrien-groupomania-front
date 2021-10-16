@@ -171,7 +171,7 @@ async function downVote() {
   </div>
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
-    <p class="post-text" :class="{ fade: fadeText }">{{ text }}</p>
+    <p class="post-text" :class="{ fade: fadeText, notfade: !fadeText }">{{ text }}</p>
     <div class="button-container">
       <button
         @click="showAllTextFunction"
@@ -224,6 +224,7 @@ async function downVote() {
     padding: 20px;
     color: white;
     white-space: pre-wrap;
+    
   }
 }
 .post-body,
@@ -239,6 +240,10 @@ async function downVote() {
   border-radius: 5px;
   padding: 0 3px;
   margin-right: 3px;
+  &:hover {
+        
+        filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.35));
+    }
 }
 .post-footer {
   width: 100%;
@@ -255,6 +260,12 @@ async function downVote() {
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   max-height: 180px;
   overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0,1.02,0,.98);
+}
+.notfade {
+  transition: max-height 1s cubic-bezier(1,.08,1,-0.19);
+    max-height: 10000px;
+    overflow: hidden;
 }
 
 .button-small {
