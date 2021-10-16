@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from "@vue/runtime-core";
 import { computed, ref, Ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { deletePost } from "../../services/PostService";
+import { sendLike } from "../../services/LikeService";
 import UpVote from "../../assets/UpVote.vue";
 
+const emit = defineEmits(["onLike"]);
 const router = useRouter();
-
 const store = useStore();
 const props = defineProps({
   id: Number,
@@ -23,33 +23,26 @@ const props = defineProps({
   likeStatus: Number,
 });
 const showAllText: Ref<Boolean> = ref(false);
-const showLessOrMore: Ref<String> = ref();
-const fadeText: Ref<Boolean> = ref();
+const showLessOrMore: Ref<String> = ref("Montrer plus");
 const postHeader: Ref<Element> = ref();
 
 const userLiked = computed(() => props.likeStatus === 1);
 const userDisliked = computed(() => props.likeStatus === -1);
-
-const textComputed = computed(() => {
-  if (!showAllText.value) {
-    showLessOrMore.value = "Montrer plus";
-    fadeText.value = true;
-    return props.text.substring(0, 300);
-  } else {
-    showLessOrMore.value = "Montrer moins";
-    fadeText.value = false;
-    return props.text;
-  }
-});
+const textIsTooLong = computed(() => props.text.length > 300 || props.text.split(/\r*\n/).length > 10)
+const fadeText = computed(() => textIsTooLong.value && !showAllText.value)
 
 function showAllTextFunction(event) {
   showAllText.value = !showAllText.value;
   let postHeader = event.currentTarget.parentNode.parentNode.previousSibling;
   if (!showAllText.value) {
-    postHeader.scrollIntoView()
+    showLessOrMore.value = "Montrer plus";
+    postHeader.scrollIntoView();
+    showAllText.value = false
+  } else {
+    showLessOrMore.value = "Montrer moins";
+    showAllText.value = true
   }
 }
-
 
 async function deleteIt() {
   await deletePost(props.id);
@@ -66,6 +59,74 @@ function updateIt() {
       postImageUrl: props.postImageUrl,
     },
   });
+}
+
+async function upVote() {
+  if (props.likeStatus === 1) {
+    let res = await sendLike(props.id, 0);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: 0,
+        likeToAdd: -1,
+        dislikeToAdd: 0,
+      });
+    }
+  } else if (props.likeStatus === 0) {
+    let res = await sendLike(props.id, 1);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: 1,
+        likeToAdd: 1,
+        dislikeToAdd: 0,
+      });
+    }
+  } else if (props.likeStatus === -1) {
+    let res = await sendLike(props.id, 1);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: 1,
+        likeToAdd: 1,
+        dislikeToAdd: -1,
+      });
+    }
+  }
+}
+
+async function downVote() {
+  if (props.likeStatus === 1) {
+    let res = await sendLike(props.id, -1);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: -1,
+        likeToAdd: -1,
+        dislikeToAdd: 1,
+      });
+    }
+  } else if (props.likeStatus === 0) {
+    let res = await sendLike(props.id, -1);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: -1,
+        likeToAdd: 0,
+        dislikeToAdd: 1,
+      });
+    }
+  } else if (props.likeStatus === -1) {
+    let res = await sendLike(props.id, 0);
+    if (res.status === 201) {
+      emit("onLike", {
+        postId: props.id,
+        likeStatus: 0,
+        likeToAdd: 0,
+        dislikeToAdd: -1,
+      });
+    }
+  }
 }
 </script>
 
@@ -110,11 +171,11 @@ function updateIt() {
   </div>
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
-    <p class="post-text" :class="{ fade: fadeText }">{{ textComputed }}</p>
+    <p class="post-text" :class="{ fade: fadeText }">{{ text }}</p>
     <div class="button-container">
       <button
         @click="showAllTextFunction"
-        v-if="props.text.length > 300"
+        v-if="textIsTooLong"
         class="button-small"
       >
         {{ showLessOrMore }}
@@ -125,9 +186,9 @@ function updateIt() {
     <div class="comments-container"></div>
     <div class="flex-h">
       <div class="like-container flex-h">
-        <UpVote :active="userLiked" :down="false" />
+        <UpVote @click="upVote" :active="userLiked" :down="false" />
         {{ props.likes - props.dislikes }}
-        <UpVote :active="userDisliked" :down="true" />
+        <UpVote @click="downVote" :active="userDisliked" :down="true" />
       </div>
     </div>
   </div>
@@ -192,6 +253,8 @@ function updateIt() {
 }
 .fade {
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  max-height: 180px;
+  overflow: hidden;
 }
 
 .button-small {

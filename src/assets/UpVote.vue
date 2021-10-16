@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="container-svg" :class="{ downvote: down, liked: active }">
+  <div class="container-svg" :class="{ downvote: down, active: active }">
     <svg
       width="24"
       height="24"
@@ -48,7 +48,7 @@ const props = defineProps({
 svg {
   stroke: white;
 }
-.liked {
+.active {
   svg {
     stroke: $fifth;
   }

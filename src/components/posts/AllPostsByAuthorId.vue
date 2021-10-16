@@ -61,6 +61,13 @@ function createObserver() {
   observer = new window.IntersectionObserver(handler);
   observer.observe(sentinal.value);
 }
+
+function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
+  let postIndex = posts.value.findIndex((obj => obj.id == postId));
+  posts.value[postIndex].likeStatus = likeStatus
+  posts.value[postIndex].dislikes = posts.value[postIndex].dislikes + dislikeToAdd
+  posts.value[postIndex].likes = posts.value[postIndex].likes + likeToAdd
+}
 </script>
 
 <template>
@@ -82,6 +89,7 @@ function createObserver() {
         :likes="post.likes"
         :dislikes="post.dislikes"
         :likeStatus="post.likeStatus"
+        @onLike="onLike"
       />
     </div>
   </div>
