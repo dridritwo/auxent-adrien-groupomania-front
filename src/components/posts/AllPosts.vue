@@ -75,6 +75,9 @@ function createObserver() {
         :postCreationDate="post.postCreationDate"
         :text="post.text"
         :postImageUrl="post.postImageUrl"
+        :likes="post.likes"
+        :dislikes="post.dislikes"
+        :likeStatus="post.likeStatus"
       />
     </div>
   </div>

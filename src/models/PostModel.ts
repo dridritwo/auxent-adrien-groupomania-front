@@ -7,4 +7,7 @@ export type Post = {
     text?: string,
     postImageUrl?: string,
     postCreationDate?: string,
+    likes?: number,
+    dislikes?: number,
+    likeStatus?: number
 }

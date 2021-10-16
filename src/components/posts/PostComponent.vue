@@ -4,6 +4,7 @@ import { computed, ref, Ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { deletePost } from "../../services/PostService";
+import UpVote from "../../assets/UpVote.vue";
 
 const router = useRouter();
 
@@ -17,30 +18,38 @@ const props = defineProps({
   authorId: Number,
   postImageUrl: String,
   text: String,
+  likes: Number,
+  dislikes: Number,
+  likeStatus: Number,
 });
 const showAllText: Ref<Boolean> = ref(false);
 const showLessOrMore: Ref<String> = ref();
+const fadeText: Ref<Boolean> = ref();
 const postHeader: Ref<Element> = ref();
+
+const userLiked = computed(() => props.likeStatus === 1);
+const userDisliked = computed(() => props.likeStatus === -1);
 
 const textComputed = computed(() => {
   if (!showAllText.value) {
     showLessOrMore.value = "Montrer plus";
+    fadeText.value = true;
     return props.text.substring(0, 300);
   } else {
-    showLessOrMore.value = "Montrer moins"
+    showLessOrMore.value = "Montrer moins";
+    fadeText.value = false;
     return props.text;
   }
 });
 
-watch(showAllText, async (showAllText, prevValue) => {
-      window.scrollTo({
-  top: 89,
-  left: 0,
-  behavior: 'smooth'
-});
-});
+function showAllTextFunction(event) {
+  showAllText.value = !showAllText.value;
+  let postHeader = event.currentTarget.parentNode.parentNode.previousSibling;
+  if (!showAllText.value) {
+    postHeader.scrollIntoView()
+  }
+}
 
-onMounted(async () => {});
 
 async function deleteIt() {
   await deletePost(props.id);
@@ -101,13 +110,27 @@ function updateIt() {
   </div>
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
-    <p class="post-text">{{ textComputed }}</p>
+    <p class="post-text" :class="{ fade: fadeText }">{{ textComputed }}</p>
     <div class="button-container">
-
-      <button @click="showAllText = !showAllText" v-if="props.text.length > 300" class="button-small">{{showLessOrMore}}</button>
+      <button
+        @click="showAllTextFunction"
+        v-if="props.text.length > 300"
+        class="button-small"
+      >
+        {{ showLessOrMore }}
+      </button>
     </div>
   </div>
-  <div class="post-footer"></div>
+  <div class="post-footer">
+    <div class="comments-container"></div>
+    <div class="flex-h">
+      <div class="like-container flex-h">
+        <UpVote :active="userLiked" :down="false" />
+        {{ props.likes - props.dislikes }}
+        <UpVote :active="userDisliked" :down="true" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -155,5 +178,23 @@ function updateIt() {
   border-radius: 5px;
   padding: 0 3px;
   margin-right: 3px;
+}
+.post-footer {
+  width: 100%;
+  .flex-h {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    padding: 10px 30px;
+  }
+}
+.fade {
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+}
+
+.button-small {
+  margin: 0;
 }
 </style>
