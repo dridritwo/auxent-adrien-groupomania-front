@@ -44,6 +44,10 @@ const props = defineProps({
   width: 50px;
   height: 50px;
   cursor: pointer;
+  &:hover {
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 svg {
   stroke: white;

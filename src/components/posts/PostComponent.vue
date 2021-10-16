@@ -187,7 +187,7 @@ async function downVote() {
     <div class="flex-h">
       <div class="like-container flex-h">
         <UpVote @click="upVote" :active="userLiked" :down="false" />
-        {{ props.likes - props.dislikes }}
+        <strong>{{ props.likes - props.dislikes }}</strong>
         <UpVote @click="downVote" :active="userDisliked" :down="true" />
       </div>
     </div>
@@ -270,5 +270,8 @@ async function downVote() {
 
 .button-small {
   margin: 0;
+}
+strong {
+  color: white;
 }
 </style>

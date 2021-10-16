@@ -4,6 +4,7 @@ import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 import { useStore } from 'vuex'
 import {onMounted} from 'vue'
 import { useRouter, useRoute } from "vue-router";
+import IconAboveFont2 from '../assets/IconAboveFont2.vue';
 const store = useStore()
 const router = useRouter();
 
