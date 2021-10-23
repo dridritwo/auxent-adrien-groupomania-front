@@ -9,5 +9,6 @@ export type Post = {
     postCreationDate?: string,
     likes?: number,
     dislikes?: number,
-    likeStatus?: number
+    likeStatus?: number,
+    commentsCount?: number
 }

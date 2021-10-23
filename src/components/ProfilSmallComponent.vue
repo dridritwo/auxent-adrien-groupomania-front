@@ -20,7 +20,7 @@ onMounted(() => { });
 <template>
   <div v-if="store.state.user" class="profile-small">
     <img
-      class="profile-image link"
+      class="profile-image link hover-grow"
       @click="go(`/profil`)"
       :src=store.state.user.avatar_url
       alt="avatar"

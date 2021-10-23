@@ -26,10 +26,10 @@ onMounted(() => {});
 
 <template>
   <header>
-    <ProfilSmallComponent />
-    <IconHome @click="go(`/home`)" />
-    <IconFire />
-    <IconAdd @click="go(`/new-post`)" />
+    <ProfilSmallComponent  />
+    <IconHome class="hover-grow" @click="go(`/home`)" />
+    <IconFire class="hover-grow" />
+    <IconAdd class="hover-grow" @click="go(`/new-post`)" />
   </header>
 </template>
 

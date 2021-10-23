@@ -4,7 +4,11 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { deletePost } from "../../services/PostService";
 import { sendLike } from "../../services/LikeService";
+import { getComments } from "../../services/CommentService";
 import UpVote from "../../assets/UpVote.vue";
+import IconComment from "../../assets/IconComment.vue";
+import {Comment} from "../../models/CommentModel";
+import CommentCompVue from "./CommentComponent.vue";
 
 const emit = defineEmits(["onLike"]);
 const router = useRouter();
@@ -21,10 +25,12 @@ const props = defineProps({
   likes: Number,
   dislikes: Number,
   likeStatus: Number,
+  commentsCount: Number
 });
 const showAllText: Ref<Boolean> = ref(false);
 const showLessOrMore: Ref<String> = ref("Montrer plus");
 const postHeader: Ref<Element> = ref();
+const comments: Ref<Comment[]> = ref(null);
 
 const userLiked = computed(() => props.likeStatus === 1);
 const userDisliked = computed(() => props.likeStatus === -1);
@@ -128,6 +134,15 @@ async function downVote() {
     }
   }
 }
+
+async function showComments() {
+  if (!comments.value){
+    let response: Comment[] = await getComments(props.id);
+    comments.value = response;
+  } else {
+    comments.value = null;
+  }
+}
 </script>
 
 <template>
@@ -183,14 +198,26 @@ async function downVote() {
     </div>
   </div>
   <div class="post-footer">
-    <div class="comments-container"></div>
     <div class="flex-h">
+      <div class="comments-container flex-h">
+        <IconComment @click="showComments" class="hover-grow" /> {{commentsCount}}
+      </div>
       <div class="like-container flex-h">
         <UpVote @click="upVote" :active="userLiked" :down="false" />
         <strong>{{ props.likes - props.dislikes }}</strong>
         <UpVote @click="downVote" :active="userDisliked" :down="true" />
       </div>
     </div>
+  </div>
+  <div v-if="comments" v-for="comment in comments" class="comments-container">
+    <CommentCompVue
+        :id="comment.id"
+        :text="comment.text"
+        :username="comment.username"
+        :author_id="comment.author_id"
+        :post_id="comment.post_id"
+        :avatarUrl="comment.avatarUrl"
+      />
   </div>
 </template>
 
@@ -272,6 +299,9 @@ async function downVote() {
   margin: 0;
 }
 strong {
+  color: white;
+}
+.comments-container {
   color: white;
 }
 </style>

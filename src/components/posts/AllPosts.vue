@@ -85,6 +85,7 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
         :likes="post.likes"
         :dislikes="post.dislikes"
         :likeStatus="post.likeStatus"
+        :commentsCount="post.commentsCount"
         @onLike="onLike"
       />
     </div>
