@@ -4,5 +4,6 @@ export type Comment = {
     post_id?: number,
     avatarUrl?: string,
     id?: number,
-    text?: string
+    text?: string,
+    creation_date?: Date
 }

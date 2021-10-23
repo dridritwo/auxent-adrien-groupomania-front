@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue";
-import { sendPostForm } from "../../services/PostService";
+import { sendCommentForm } from "../../services/CommentService";
 import { Post } from "../../models/PostModel";
 import { useRouter } from "vue-router";
 import { AxiosError, AxiosResponse } from "axios";
+import { useStore } from "vuex";
+import {Comment} from "../../models/CommentModel"
 
-const router = useRouter();
-
-const postForm: Ref<Post> = ref({
-  title: "",
-  text: "",
-  postImageUrl: "",
+const store = useStore();
+const emit = defineEmits(["onCommentSuccess"]);
+const props = defineProps({
+  post_id: Number,
 });
+
+const commentForm: Ref<Post> = ref({
+  text: "",
+});
+
 const success: Ref<Boolean> = ref(false);
 const errors: Ref<Boolean> = ref(false);
 const isLoading: Ref<Boolean> = ref(false);
@@ -20,12 +25,20 @@ async function submit() {
   errors.value = false;
   success.value = false;
   isLoading.value = true;
-  let response: Post[] = await sendPostForm(postForm.value);
-  if (response) {
+  let response: AxiosResponse = await sendCommentForm(
+    commentForm.value.text,
+    props.post_id
+  );
+  if (response.status === 201) {
     success.value = true;
-    setTimeout(function () {
-      router.push("/home");
-    }, 1000);
+    emit("onCommentSuccess", {
+  username: store.state.user.username,
+  author_id: store.state.user.id,
+  post_id: props.post_id,
+  avatarUrl: store.state.user.avatar_url,
+  text: commentForm.value.text,
+  creation_date: new Date(),
+})
   } else {
     errors.value = true;
   }
@@ -34,108 +47,53 @@ async function submit() {
 </script>
 
 <template>
-  <div class="home-container">
-    <div class="header-back">
-      <div class="header">
-        <h1>Nouveau poteau</h1>
-      </div>
-    </div>
-    <div class="form-back">
-      <form id="login-form" @submit.prevent="submit">
-        <div class="inputs">
-          <label for="title">Titre:</label>
-          <input
-            class="input"
-            type="text"
-            name="title"
-            v-model="postForm.title"
-            placeholder="Titre"
-            required
-          />
-          <label for="text">Votre message:</label>
-          <textarea
-            class="input"
-            type="text"
-            name="text"
-            v-model="postForm.text"
-            placeholder="Message"
-          ></textarea>
-          <label for="imageUrl">Lien de votre image:</label>
-          <input
-            class="input"
-            type="url"
-            name="imageUrl"
-            v-model="postForm.postImageUrl"
-            placeholder="Lien de votre image/gif"
-          />
-        </div>
-        <div v-if="success" class="success-div">Sauvegarde effectuée</div>
-        <div v-if="errors" class="error-div">Erreur</div>
-        <button class="button">Envoyer</button>
-      </form>
-    </div>
-  </div>
+  <form id="comment-form" @submit.prevent="submit">
+    <textarea
+      class="input"
+      type="text"
+      name="text"
+      v-model="commentForm.text"
+      placeholder="Message"
+    ></textarea>
+    <button>Envoyer</button>
+  </form>
+  <div v-if="success" class="success-div">Sauvegarde effectuée</div>
+  <div v-if="errors" class="error-div">Erreur</div>
 </template>
 
 <style lang="scss" scoped>
-.home-container {
-  max-width: $max-width-desk;
-  background-color: $secondary;
-  width: 80%;
-  border: 1px solid white;
-  border-radius: 10px;
-  overflow: hidden;
-  min-width: 300px;
-  margin-top: 30px;
-
-  .header-back {
-    background-color: $fourth;
-    .header {
-      background-color: $secondary;
-      border-radius: 0% 0 20px 0;
-      padding: 20px 0px;
-      font-size: 35px;
-    }
-  }
-  .form-back {
-    background-color: $secondary;
-    form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      background-color: $fourth;
-      border-radius: 20px 0 0px 0;
-      padding: 5%;
-      .inputs {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        width: 100%;
-        font-size: 30px;
-        margin: 20px 0px;
-      }
-      .button {
-        margin: 0%;
-      }
-      input {
-        margin-bottom: 15px;
-        text-align: start;
-        font-size: large;
-      }
-      textarea {
-        width: 100%;
-      }
-      label {
-        text-align: start;
-        width: 100%;
-      }
-    }
-  }
+#comment-form {
+  margin: 4px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: ". .";
 }
 
+button {
+  color: $dark;
+  background-color: $light-grey;
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.35));
+  border-radius: 10px;
+  border: none;
+  margin: 3px;
+  padding: 10px;
+  border: 3px solid white;
+
+  &:hover {
+    border: 3px solid $secondary;
+  }
+
+  font-family: "Nunito", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+}
+
+textarea {
+  border-radius: 10px;
+}
 .shadow {
   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }

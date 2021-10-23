@@ -7,8 +7,9 @@ import { sendLike } from "../../services/LikeService";
 import { getComments } from "../../services/CommentService";
 import UpVote from "../../assets/UpVote.vue";
 import IconComment from "../../assets/IconComment.vue";
-import {Comment} from "../../models/CommentModel";
+import { Comment } from "../../models/CommentModel";
 import CommentCompVue from "./CommentComponent.vue";
+import NewCommentForm from "./NewCommentForm.vue";
 
 const emit = defineEmits(["onLike"]);
 const router = useRouter();
@@ -25,17 +26,21 @@ const props = defineProps({
   likes: Number,
   dislikes: Number,
   likeStatus: Number,
-  commentsCount: Number
+  commentsCount: Number,
 });
 const showAllText: Ref<Boolean> = ref(false);
 const showLessOrMore: Ref<String> = ref("Montrer plus");
 const postHeader: Ref<Element> = ref();
 const comments: Ref<Comment[]> = ref(null);
+const commentForm: Ref<Boolean> = ref(false);
+const commentAddedCount: Ref<number> = ref(0);
 
 const userLiked = computed(() => props.likeStatus === 1);
 const userDisliked = computed(() => props.likeStatus === -1);
-const textIsTooLong = computed(() => props.text.length > 300 || props.text.split(/\r*\n/).length > 10)
-const fadeText = computed(() => textIsTooLong.value && !showAllText.value)
+const textIsTooLong = computed(
+  () => props.text.length > 300 || props.text.split(/\r*\n/).length > 10
+);
+const fadeText = computed(() => textIsTooLong.value && !showAllText.value);
 
 function showAllTextFunction(event) {
   showAllText.value = !showAllText.value;
@@ -43,10 +48,10 @@ function showAllTextFunction(event) {
   if (!showAllText.value) {
     showLessOrMore.value = "Montrer plus";
     postHeader.scrollIntoView();
-    showAllText.value = false
+    showAllText.value = false;
   } else {
     showLessOrMore.value = "Montrer moins";
-    showAllText.value = true
+    showAllText.value = true;
   }
 }
 
@@ -136,12 +141,18 @@ async function downVote() {
 }
 
 async function showComments() {
-  if (!comments.value){
+  commentForm.value = !commentForm.value;
+  if (!comments.value) {
     let response: Comment[] = await getComments(props.id);
     comments.value = response;
   } else {
     comments.value = null;
   }
+}
+
+function onCommentSuccess(payload) {
+  comments.value.unshift(payload)
+  commentAddedCount.value += 1;
 }
 </script>
 
@@ -186,7 +197,9 @@ async function showComments() {
   </div>
   <div class="post-body">
     <img v-if="postImageUrl" :src="postImageUrl" alt="post image" />
-    <p class="post-text" :class="{ fade: fadeText, notfade: !fadeText }">{{ text }}</p>
+    <p class="post-text" :class="{ fade: fadeText, notfade: !fadeText }">
+      {{ text }}
+    </p>
     <div class="button-container">
       <button
         @click="showAllTextFunction"
@@ -199,8 +212,9 @@ async function showComments() {
   </div>
   <div class="post-footer">
     <div class="flex-h">
-      <div class="comments-container flex-h">
-        <IconComment @click="showComments" class="hover-grow" /> {{commentsCount}}
+      <div class="comments-icon-container flex-h">
+        <IconComment @click="showComments" class="hover-grow" />
+        {{ commentsCount + commentAddedCount }}
       </div>
       <div class="like-container flex-h">
         <UpVote @click="upVote" :active="userLiked" :down="false" />
@@ -209,15 +223,21 @@ async function showComments() {
       </div>
     </div>
   </div>
-  <div v-if="comments" v-for="comment in comments" class="comments-container">
-    <CommentCompVue
+  <div v-if="commentForm" class="comment-form">
+    <NewCommentForm @on-comment-success="onCommentSuccess" :post_id="props.id" />
+  </div>
+  <div v-if="comments" class="comments-container">
+    <div v-for="comment in comments" class="comment-container">
+      <CommentCompVue
         :id="comment.id"
         :text="comment.text"
         :username="comment.username"
         :author_id="comment.author_id"
         :post_id="comment.post_id"
         :avatarUrl="comment.avatarUrl"
+        :creation_date="new Date(comment.creation_date)"
       />
+    </div>
   </div>
 </template>
 
@@ -251,7 +271,6 @@ async function showComments() {
     padding: 20px;
     color: white;
     white-space: pre-wrap;
-    
   }
 }
 .post-body,
@@ -268,9 +287,8 @@ async function showComments() {
   padding: 0 3px;
   margin-right: 3px;
   &:hover {
-        
-        filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.35));
-    }
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.35));
+  }
 }
 .post-footer {
   width: 100%;
@@ -287,12 +305,12 @@ async function showComments() {
   mask-image: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   max-height: 180px;
   overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0,1.02,0,.98);
+  transition: max-height 0.5s cubic-bezier(0, 1.02, 0, 0.98);
 }
 .notfade {
-  transition: max-height 1s cubic-bezier(1,.08,1,-0.19);
-    max-height: 10000px;
-    overflow: hidden;
+  transition: max-height 1s cubic-bezier(1, 0.08, 1, -0.19);
+  max-height: 10000px;
+  overflow: hidden;
 }
 
 .button-small {
@@ -303,5 +321,18 @@ strong {
 }
 .comments-container {
   color: white;
+  background-color: $primary;
+  padding: 10px;
+  width: 100%;
+  
+}
+.comment-container {
+  margin: 3px 0px;
+}
+.comments-icon-container {
+  color: white;
+}
+.comment-form {
+  width: 100%;
 }
 </style>

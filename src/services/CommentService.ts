@@ -2,15 +2,15 @@ import store from "../store/index";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Comment } from "../models/CommentModel";
 
-export async function sendLike(postId, likeStatus): Promise<AxiosResponse> {
+export async function sendCommentForm(text, postId): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {
     method: "post",
-    url: `http://localhost:3000/api/v1/likes/id/${postId}`,
+    url: `http://localhost:3000/api/v1/comments/post_id/${postId}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
     data: {
-      like: likeStatus
+      text: text
     }
   };
   let response: AxiosResponse = await axios(config)
@@ -27,7 +27,6 @@ export async function getComments(postId): Promise<Comment[]> {
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
-      
     }
   };
   let response: Comment[] = await axios
