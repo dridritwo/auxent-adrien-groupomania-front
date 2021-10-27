@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { AxiosResponse } from 'axios';
 import { useStore } from 'vuex';
+import { deleteComment } from '../../services/CommentService';
 
 const store = useStore();
 const props = defineProps({
@@ -12,12 +14,15 @@ const props = defineProps({
   creation_date: Date
 });
 
-function deleteIt() {
-  console.log("date : ", props.creation_date)
-}
-function updateIt() {
+const emit = defineEmits(["onCommentDeleteSuccess"]);
 
+async function deleteIt() {
+  const response: AxiosResponse = await deleteComment(props.id);
+  if (response.status === 200) {
+    emit("onCommentDeleteSuccess", props.id)
+  }
 }
+
 </script>
 
 <template>
@@ -34,15 +39,6 @@ function updateIt() {
             author_id === store.state.user.id
           "
           >Supprimer</span
-        >
-        <span
-          id="update-comment"
-          @click="updateIt"
-          v-if="
-            store.state.user.role === 'superAdmin' ||
-            author_id === store.state.user.id
-          "
-          >Editer</span
         >
         <p>
           Posté le :

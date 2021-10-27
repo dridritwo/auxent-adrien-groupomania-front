@@ -154,6 +154,12 @@ function onCommentSuccess(payload) {
   comments.value.unshift(payload)
   commentAddedCount.value += 1;
 }
+
+function onCommentDeleteSuccess(commentId) {
+  comments.value = comments.value.filter(function(value, index, arr){ 
+        return value.id !== commentId;
+    });
+}
 </script>
 
 <template>
@@ -236,6 +242,7 @@ function onCommentSuccess(payload) {
         :post_id="comment.post_id"
         :avatarUrl="comment.avatarUrl"
         :creation_date="new Date(comment.creation_date)"
+        @onCommentDeleteSuccess="onCommentDeleteSuccess"
       />
     </div>
   </div>

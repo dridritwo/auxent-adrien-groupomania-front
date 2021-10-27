@@ -39,3 +39,21 @@ export async function getComments(postId): Promise<Comment[]> {
     });
   return response;
 }
+
+export async function deleteComment(id: Number): Promise<AxiosResponse> {
+  let config: AxiosRequestConfig = {
+    method: "delete",
+    url: `http://localhost:3000/api/v1/comments/comment_id/${id}`,
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`,
+    }
+  };
+  let response: AxiosResponse = await axios(config)
+    .then((response: AxiosResponse) => {
+      return response;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return response;
+}
