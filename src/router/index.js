@@ -8,6 +8,7 @@ import ProfilEdit from "@/views/ProfilEdit.vue";
 import Login from "@/views/Login.vue";
 import Signup from "@/views/Signup.vue";
 import store from "@/store/index";
+import { getUser } from "../services/UserService"
 import { computed } from "vue";
 
 const routes = [
@@ -15,11 +16,12 @@ const routes = [
     path: "/",
     name: "HomeNotLogged",
     component: HomeNotLogged,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
         router.push("/home");
+        return next();
       } else {
-        next();
+        return next();
       }
     },
   },
@@ -27,11 +29,12 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
-        next();
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
       } else {
         router.push("/");
+        return next();
       }
     },
   },
@@ -39,11 +42,12 @@ const routes = [
     path: "/profil",
     name: "Profil",
     component: Profil,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
-        next();
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
       } else {
         router.push("/");
+        return next();
       }
     },
   },
@@ -51,11 +55,12 @@ const routes = [
     path: "/profil-edit",
     name: "ProfilEdit",
     component: ProfilEdit,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
-        next();
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
       } else {
         router.push("/");
+        return next();
       }
     },
   },
@@ -63,11 +68,12 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
         router.push("/home");
+        return next();
       } else {
-        next();
+        return next();
       }
     },
   },
@@ -75,11 +81,12 @@ const routes = [
     path: "/signup",
     name: "Signup",
     component: Signup,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
         router.push("/home");
+        return next();
       } else {
-        next();
+        return next();
       }
     },
   },
@@ -87,11 +94,12 @@ const routes = [
     path: "/new-post",
     name: "NewPost",
     component: NewPost,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
-        next();
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
       } else {
         router.push("/");
+        return next();
       }
     },
   },
@@ -99,26 +107,40 @@ const routes = [
     path: "/update-post",
     name: "UpdatePost",
     component: UpdatePost,
-    beforeEnter: (to, from, next) => {
-      if (userIsLogged()) {
-        next();
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
       } else {
         router.push("/");
+        return next();
       }
     },
   },
 ];
 
-function userIsLogged() {
+async function userIsLogged() {
+  let localUser = JSON.parse(localStorage.getItem("USER"));
   if (store.state.user) {
-    return true;
-  } else {
-    if (JSON.parse(localStorage.getItem("USER"))) {
-      store.commit("SET_USER", JSON.parse(localStorage.getItem("USER")));
+    let response = await getUser(store.state.user.token);
+    if (response.status == 200) {
       return true;
     } else {
+      store.state.user = null;
       return false;
     }
+  } else if (localUser) {
+    let response = await getUser(localUser.token);
+    if (response.status == 200) {
+      let user = response.data;
+      user.token = localUser.token;
+      store.commit("SET_USER", user);
+      return true;
+    } else {
+      localStorage.removeItem("USER");
+      return false;
+    }
+  } else {
+    return false;
   }
 }
 
