@@ -1,26 +1,22 @@
 import { UserModel } from "../models/UserModel";
 import store from "../store/index";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-export async function getUsersService() {
-  let myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append(
-    "Authorization",
-    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImlhdCI6MTYzMTIxODA0MywiZXhwIjoxNjMxMzA0NDQzfQ.662P1jdtvtqLkHIu1XlsQq5dK8wa2OfmOSPYOcPjF0k`
-  );
-  let result = await fetch("http://localhost:3000/api/v1/users", {
-    method: "GET",
-    headers: myHeaders,
-  })
+export async function getUser(token): Promise<AxiosResponse> {
+  let config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  };
+  let response: AxiosResponse = await axios
+    .get(`http://localhost:3000/api/v1/users`, config)
     .then((response) => {
-      return response.json();
+      return response;
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch((error) => {
+      return error;
     });
-
-  return result;
+  return response;
 }
 
 export async function logUser(formData: UserModel) {

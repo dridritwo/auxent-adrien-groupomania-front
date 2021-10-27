@@ -6,4 +6,5 @@ export type UserModel = {
     id?: number,
     role?: String,
     userCreationDate?: Date,
+    token?: String
 }
