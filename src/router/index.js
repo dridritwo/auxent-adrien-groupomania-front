@@ -9,8 +9,7 @@ import ProfilEdit from "@/views/ProfilEdit.vue";
 import Login from "@/views/Login.vue";
 import Signup from "@/views/Signup.vue";
 import store from "@/store/index";
-import { getUser } from "../services/UserService"
-import { computed } from "vue";
+import { getUser } from "../services/UserService";
 
 const routes = [
   {
