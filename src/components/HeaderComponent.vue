@@ -28,7 +28,7 @@ onMounted(() => {});
   <header>
     <ProfilSmallComponent  />
     <IconHome class="hover-grow" @click="go(`/home`)" />
-    <IconFire class="hover-grow" />
+    <IconFire class="hover-grow" @click="go(`/hottest`)" />
     <IconAdd class="hover-grow" @click="go(`/new-post`)" />
   </header>
 </template>

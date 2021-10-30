@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import HomeNotLogged from "@/views/HomeNotLogged.vue";
 import Home from "@/views/home.vue";
+import HottestPosts from "@/views/HottestPosts.vue";
 import NewPost from "@/views/NewPost.vue";
 import UpdatePost from "@/views/UpdatePost.vue";
 import Profil from "@/views/Profil.vue";
@@ -29,6 +30,19 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
+    beforeEnter: async (to, from, next) => {
+      if (await userIsLogged()) {
+        return next();
+      } else {
+        router.push("/");
+        return next();
+      }
+    },
+  },
+  {
+    path: "/hottest",
+    name: "Hottest",
+    component: HottestPosts,
     beforeEnter: async (to, from, next) => {
       if (await userIsLogged()) {
         return next();

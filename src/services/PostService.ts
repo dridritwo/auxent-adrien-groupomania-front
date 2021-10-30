@@ -1,4 +1,3 @@
-import { UserModel } from "../models/UserModel";
 import store from "../store/index";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Post } from "../models/PostModel";
@@ -13,6 +12,25 @@ export async function getAllPosts(): Promise<Post[]> {
   };
   let response: Post[] = await axios
     .get(`http://localhost:3000/api/v1/posts`, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return null;
+    });
+  return response;
+}
+
+export async function getHotPosts(): Promise<Post[]> {
+  let config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`,
+      
+    },
+    params: { page: 0, limit: 5 }
+  };
+  let response: Post[] = await axios
+    .get(`http://localhost:3000/api/v1/posts/hottest`, config)
     .then((response) => {
       return response.data;
     })
@@ -40,7 +58,24 @@ export async function getMorePosts(page: number): Promise<Post[]> {
   return response;
 }
 
-// localhost:3000/api/v1/posts/
+export async function getMoreHotPosts(page: number): Promise<Post[]> {
+  let config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${store.state.user.token}`,
+    },
+    params: { page: page, limit: 5 }
+  };
+  let response: Post[] = await axios
+    .get(`http://localhost:3000/api/v1/posts/hottest`, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return null;
+    });
+  return response;
+}
+
 export async function sendPostForm(postForm: Post): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     method: "post",
@@ -64,7 +99,6 @@ export async function sendPostForm(postForm: Post): Promise<Post[]> {
   return response;
 }
 
-// localhost:3000/api/v1/posts/id/1
 export async function deletePost(id: Number): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {
     method: "delete",

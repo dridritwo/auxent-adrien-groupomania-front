@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-const route = useRoute()
+import { useRouter } from 'vue-router'
 const router = useRouter()
 
 function go() {
