@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 <template>
   <div class="header-icon">
-    <img src="./Icon-Flame.png" alt="alt-image" srcset="" />
+    <img src="./Icon-Flame.png" alt="flame icon" />
   </div>
 </template>
 

@@ -27,6 +27,7 @@ const props = defineProps({
   dislikes: Number,
   likeStatus: Number,
   commentsCount: Number,
+  index: Number,
 });
 const showAllText: Ref<Boolean> = ref(false);
 const showLessOrMore: Ref<String> = ref("Montrer plus");
@@ -168,7 +169,7 @@ function onCommentDeleteSuccess(commentId) {
     <div class="post-info">
       <h1>{{ title }}</h1>
       <span
-        id="delete-post"
+        class="delete-post"
         @click="deleteIt"
         v-if="
           store.state.user.role === 'admin' || authorId === store.state.user.id
@@ -176,7 +177,7 @@ function onCommentDeleteSuccess(commentId) {
         >Supprimer</span
       >
       <span
-        id="update-post"
+        class="update-post"
         @click="updateIt"
         v-if="
           store.state.user.role === 'superAdmin' ||
@@ -284,8 +285,8 @@ function onCommentDeleteSuccess(commentId) {
 .post-footer {
   background-color: $primary;
 }
-#delete-post,
-#update-post {
+.delete-post,
+.update-post {
   cursor: pointer;
   color: $fifth;
   font-weight: bolder;

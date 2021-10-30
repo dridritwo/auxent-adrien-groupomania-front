@@ -67,7 +67,7 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
   <div class="list-container">
     <IconAboveFont1 class="behind" />
 
-    <div v-if="posts" v-for="post in posts" class="post-list">
+    <div v-if="posts" v-for="(post, index) in posts" class="post-list" >
       <PostComponent
         :title="post.title"
         :id="post.id"
@@ -81,6 +81,7 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
         :dislikes="post.dislikes"
         :likeStatus="post.likeStatus"
         :commentsCount="post.commentsCount"
+        :index="index"
         @onLike="onLike"
       />
     </div>
