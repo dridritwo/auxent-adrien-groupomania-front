@@ -1,6 +1,6 @@
 import { UserModel } from "../models/UserModel";
 import store from "../store/index";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export async function getUser(token): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {

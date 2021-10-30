@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from "@vue/runtime-core";
-import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
-import { onBeforeUnmount, onDeactivated, ref, Ref, watch } from "vue";
+import { ref, Ref, watch } from "vue";
 import { getAllPostsByAuthorId } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
-import IconAboveFont1 from "../../assets/IconAboveFont1.vue";
 import PostComponent from "./PostComponent.vue";
 
 const store = useStore();

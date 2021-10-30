@@ -1,17 +1,7 @@
 <script setup lang="ts">
-import { useStore } from 'vuex'
-import { onMounted, computed } from 'vue'
-import { useRouter, useRoute } from "vue-router";
+import { useStore } from 'vuex';
 
-import ButtonLogOut from '@/components/buttons/ButtonLogOut.vue';
-import ButtonDeleteUser from '@/components/buttons/ButtonDeleteUser.vue';
-const route = useRoute();
-const router = useRouter();
-
-const store = useStore()
-
-onMounted(() => {
-})
+const store = useStore();
 
 </script>
 

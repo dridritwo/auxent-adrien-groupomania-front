@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
+import { ref, Ref } from "vue";
 import { updatePost } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
 import { useRoute, useRouter } from "vue-router";
-import { AxiosError, AxiosResponse } from "axios";
 
 const router = useRouter();
 const route = useRoute();

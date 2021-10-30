@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
 import { onMounted, ref, nextTick } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 import ArrowLeft from "../assets/ArrowLeft.vue";
 import HeaderComponent from "../components/HeaderComponent.vue";

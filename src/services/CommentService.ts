@@ -1,5 +1,5 @@
 import store from "../store/index";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Comment } from "../models/CommentModel";
 
 export async function sendCommentForm(text, postId): Promise<AxiosResponse> {

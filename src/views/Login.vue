@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { UserModel } from "../models/UserModel";
 import { ref } from "vue";
-import { useStore } from "vuex";
-import { computed } from "vue";
 import { logUser } from "../services/UserService";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import ArrowLeft from "../assets/ArrowLeft.vue";
-const route = useRoute();
 const router = useRouter();
-const store = useStore();
 
 const formData = ref({
   email: "",
@@ -16,7 +11,7 @@ const formData = ref({
 });
 
 async function submit() {
-  let response = await logUser(formData.value);
+  await logUser(formData.value);
   router.push("/home");
 }
 function goBack() {

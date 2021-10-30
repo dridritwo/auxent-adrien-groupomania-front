@@ -1,5 +1,4 @@
-import { isIntegerKey } from "@vue/shared";
-import { createStore, Store } from "vuex";
+import { createStore } from "vuex";
 
 export const store = createStore({
   state: {

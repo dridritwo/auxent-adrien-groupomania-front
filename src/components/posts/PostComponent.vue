@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, Ref, watch } from "vue";
+import { computed, ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { deletePost } from "../../services/PostService";

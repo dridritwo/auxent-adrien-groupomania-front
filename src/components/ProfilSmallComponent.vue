@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from "@vue/runtime-core";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import IconHome from "../assets/IconHome.vue";
-import IconFire from "../assets/IconFire.vue";
-import IconAdd from "../assets/IconAdd.vue";
 
 const store = useStore();
-const route = useRoute();
 const router = useRouter();
 
 function go(slug: string) {
   router.push(slug);
 }
 
-onMounted(() => { });
 </script>
 
 <template>

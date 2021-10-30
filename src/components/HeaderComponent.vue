@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from "@vue/runtime-core";
-import { useRouter, useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import IconHome from "../assets/IconHome.vue";
 import IconFire from "../assets/IconFire.vue";
 import IconAdd from "../assets/IconAdd.vue";
 import ProfilSmallComponent from "./ProfilSmallComponent.vue";
 
-const store = useStore();
-const route = useRoute();
 const router = useRouter();
 
 function go(slug: string) {
@@ -21,7 +17,6 @@ const props = defineProps({
   avatar_url: String
 })
 
-onMounted(() => {});
 </script>
 
 <template>

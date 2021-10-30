@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useStore } from "vuex";
 import { deleteUser } from "../../services/UserService";
 import { ref } from "vue";
 
 const store = useStore();
-const route = useRoute()
-const router = useRouter()
+const router = useRouter();
 
 const success = ref(false);
 

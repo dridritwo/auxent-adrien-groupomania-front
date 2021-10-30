@@ -2,10 +2,8 @@
 import { ref, Ref } from "vue";
 import { sendCommentForm } from "../../services/CommentService";
 import { Post } from "../../models/PostModel";
-import { useRouter } from "vue-router";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { useStore } from "vuex";
-import {Comment} from "../../models/CommentModel"
 
 const store = useStore();
 const emit = defineEmits(["onCommentSuccess"]);

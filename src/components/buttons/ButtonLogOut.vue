@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useStore } from "vuex";
 
 const store = useStore();
-const route = useRoute()
-const router = useRouter()
+const router = useRouter();
 
 function go() {
   store.commit("SET_USER", null);
   localStorage.removeItem("USER");
-  router.push("/")
+  router.push("/");
 }
 
 

@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useStore } from "vuex";
-import { computed } from "vue";
 import { signUpUser } from "../services/UserService";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import ArrowLeft from "../assets/ArrowLeft.vue";
-const route = useRoute();
 const router = useRouter();
-const store = useStore();
-
-const user = computed(() => store.state.user);
-const formatedUser = computed(() => store.getters.formattedUser);
 
 const formData = ref({
   email: "",

@@ -1,21 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from "@vue/runtime-core";
-import { useRouter, useRoute } from "vue-router";
-import { useStore } from "vuex";
 import { ref, Ref, watch } from "vue";
 import { getHotPosts, getMoreHotPosts } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
 import IconAboveFont1 from "../../assets/IconAboveFont1.vue";
 import PostComponent from "./PostComponent.vue";
 
-const store = useStore();
 const hotPosts: Ref<Post[]> = ref([]);
 const sentinal: Ref<Element> = ref();
 const isIntersectingElement: Ref<Boolean> = ref(false);
 const isLoading: Ref<Boolean> = ref(false);
 const currentPage: Ref<number> = ref(0);
-const lastKnownScrollPosition: Ref<number> = ref(0);
-const ticking: Ref<Boolean> = ref(false);
 const poto: Ref<string> = ref("Chargement des poteaux...");
 
 watch(isIntersectingElement, async (isIntersecting, prevCount) => {

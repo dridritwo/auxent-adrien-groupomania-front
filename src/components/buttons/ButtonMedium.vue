@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-const route = useRoute()
-const router = useRouter()
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 function go() {
   router.push(props.routeUrl)

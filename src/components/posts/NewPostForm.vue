@@ -3,7 +3,6 @@ import { ref, Ref } from "vue";
 import { sendPostForm } from "../../services/PostService";
 import { Post } from "../../models/PostModel";
 import { useRouter } from "vue-router";
-import { AxiosError, AxiosResponse } from "axios";
 
 const router = useRouter();
 
