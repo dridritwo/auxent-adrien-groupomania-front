@@ -1,6 +1,6 @@
 function getBackUrl() {
 
-    if (window.location.origin == "https://auxent-adrien-orinoco.netlify.app") {
+    if (window.location.origin == "https://adrien-auxent-groupomania.herokuapp.com/" || window.location.origin == "https://quirky-booth-4f8e97.netlify.app") {
         return "https://groupodb.herokuapp.com";
     } else {
         return "http://localhost:3000/api";
@@ -8,5 +8,5 @@ function getBackUrl() {
 }
 
 
-const BACK_URL = "http://localhost:3000";
+const BACK_URL = getBackUrl();
 export { BACK_URL };
