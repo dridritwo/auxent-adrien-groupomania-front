@@ -22,6 +22,7 @@
 html {
   min-height: 100vh;
   min-width: 100vw;
+  max-width: 100%;
 
   body {
     padding: 0px;
