@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "vite --port 3001",
     "build": "vite build",
-    "serve": "vite preview --port 3001",
-    "start": "vite build"
+    "serve": "vite preview --port 3001"
   },
   "dependencies": {
     "axios": "^0.22.0",
