@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import HomeNotLogged from "@/views/HomeNotLogged.vue";
-import Home from "@/views/home.vue";
-import HottestPosts from "@/views/HottestPosts.vue";
+import Home from "../views/Home";
+import HottestPosts from "./views/HottestPosts.vue";
 import NewPost from "@/views/NewPost.vue";
 import UpdatePost from "@/views/UpdatePost.vue";
 import Profil from "@/views/Profil.vue";

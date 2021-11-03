@@ -6,9 +6,9 @@ import AllHottestPosts from "../components/posts/AllHotPosts.vue";
 
 <template>
   <HeaderComponent />
-  <div class="home-container">
+  <main class="home-container">
     <AllHottestPosts />
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>

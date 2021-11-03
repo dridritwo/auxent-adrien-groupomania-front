@@ -22,7 +22,7 @@ function goBack() {
 </script>
 
 <template>
-  <div id="home">
+  <main id="home">
     <ArrowLeft class="top-left" @click="goBack" />
     <div class="home-container">
       <div class="header-back">
@@ -62,7 +62,7 @@ function goBack() {
         </form>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>

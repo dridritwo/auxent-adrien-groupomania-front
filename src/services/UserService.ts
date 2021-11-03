@@ -1,4 +1,5 @@
 import { UserModel } from "../models/UserModel";
+import { BACK_URL } from "./BackUrl";
 import store from "../store/index";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -9,7 +10,7 @@ export async function getUser(token): Promise<AxiosResponse> {
     }
   };
   let response: AxiosResponse = await axios
-    .get(`http://localhost:3000/api/v1/users`, config)
+    .get(`${BACK_URL}/api/v1/users`, config)
     .then((response) => {
       return response;
     })
@@ -23,7 +24,7 @@ export async function logUser(formData: UserModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   let response: UserModel = await fetch(
-    "http://localhost:3000/api/v1/users/login",
+    `${BACK_URL}/api/v1/users/login`,
     {
       method: "POST",
       headers: myHeaders,
@@ -49,7 +50,7 @@ export async function logUser(formData: UserModel) {
 export async function signUpUser(formData: UserModel) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  let response = await fetch("http://localhost:3000/api/v1/users", {
+  let response = await fetch(`${BACK_URL}/api/v1/users`, {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
@@ -73,7 +74,7 @@ export async function deleteUser(id, token) {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${token}`);
-  let response: Response = await fetch(`http://localhost:3000/api/v1/users/id/${id}`, {
+  let response: Response = await fetch(`${BACK_URL}/api/v1/users/id/${id}`, {
     method: "DELETE",
     headers: myHeaders,
   })
@@ -97,7 +98,7 @@ export async function updateUser(formData: UserModel) {
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `Bearer ${store.state.user.token}`);
   let response: any = await axios.patch(
-    `http://localhost:3000/api/v1/users/id/${store.state.user.id}`,
+    `${BACK_URL}/api/v1/users/id/${store.state.user.id}`,
     {
         email: formData.email,
         username: formData.username,

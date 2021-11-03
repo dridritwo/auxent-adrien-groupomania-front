@@ -1,11 +1,12 @@
 import store from "../store/index";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Comment } from "../models/CommentModel";
+import { BACK_URL } from "./BackUrl";
 
 export async function sendCommentForm(text, postId): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {
     method: "post",
-    url: `http://localhost:3000/api/v1/comments/post_id/${postId}`,
+    url: `${BACK_URL}/api/v1/comments/post_id/${postId}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
@@ -30,7 +31,7 @@ export async function getComments(postId): Promise<Comment[]> {
     }
   };
   let response: Comment[] = await axios
-    .get(`http://localhost:3000/api/v1/comments/post_id/${postId}`, config)
+    .get(`${BACK_URL}/api/v1/comments/post_id/${postId}`, config)
     .then((response) => {
       return response.data;
     })
@@ -43,7 +44,7 @@ export async function getComments(postId): Promise<Comment[]> {
 export async function deleteComment(id: Number): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {
     method: "delete",
-    url: `http://localhost:3000/api/v1/comments/comment_id/${id}`,
+    url: `${BACK_URL}/api/v1/comments/comment_id/${id}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     }

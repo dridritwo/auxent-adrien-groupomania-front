@@ -6,9 +6,9 @@ import AllPosts from "../components/posts/AllPosts.vue";
 
 <template>
   <HeaderComponent />
-  <div class="home-container">
+  <main class="home-container">
     <AllPosts />
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 import store from "../store/index";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Post } from "../models/PostModel";
+import { BACK_URL } from "./BackUrl";
 
 export async function getAllPosts(): Promise<Post[]> {
   let config: AxiosRequestConfig = {
@@ -11,7 +12,7 @@ export async function getAllPosts(): Promise<Post[]> {
     params: { page: 0, limit: 5 }
   };
   let response: Post[] = await axios
-    .get(`http://localhost:3000/api/v1/posts`, config)
+    .get(`${BACK_URL}/api/v1/posts`, config)
     .then((response) => {
       return response.data;
     })
@@ -30,7 +31,7 @@ export async function getHotPosts(): Promise<Post[]> {
     params: { page: 0, limit: 5 }
   };
   let response: Post[] = await axios
-    .get(`http://localhost:3000/api/v1/posts/hottest`, config)
+    .get(`${BACK_URL}/api/v1/posts/hottest`, config)
     .then((response) => {
       return response.data;
     })
@@ -48,7 +49,7 @@ export async function getMorePosts(page: number): Promise<Post[]> {
     params: { page: page, limit: 5 }
   };
   let response: Post[] = await axios
-    .get(`http://localhost:3000/api/v1/posts`, config)
+    .get(`${BACK_URL}/api/v1/posts`, config)
     .then((response) => {
       return response.data;
     })
@@ -66,7 +67,7 @@ export async function getMoreHotPosts(page: number): Promise<Post[]> {
     params: { page: page, limit: 5 }
   };
   let response: Post[] = await axios
-    .get(`http://localhost:3000/api/v1/posts/hottest`, config)
+    .get(`${BACK_URL}/api/v1/posts/hottest`, config)
     .then((response) => {
       return response.data;
     })
@@ -79,7 +80,7 @@ export async function getMoreHotPosts(page: number): Promise<Post[]> {
 export async function sendPostForm(postForm: Post): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     method: "post",
-    url: `http://localhost:3000/api/v1/posts/`,
+    url: `${BACK_URL}/api/v1/posts/`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
@@ -102,7 +103,7 @@ export async function sendPostForm(postForm: Post): Promise<Post[]> {
 export async function deletePost(id: Number): Promise<AxiosResponse> {
   let config: AxiosRequestConfig = {
     method: "delete",
-    url: `http://localhost:3000/api/v1/posts/id/${id}`,
+    url: `${BACK_URL}/api/v1/posts/id/${id}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     }
@@ -126,7 +127,7 @@ export async function getAllPostsByAuthorId(id: Number, page: Number): Promise<P
     params: { page: page, limit: 5 }
   };
   let response: Post[] = await axios
-    .get(`http://localhost:3000/api/v1/posts/author_id/${store.state.user.id}`, config)
+    .get(`${BACK_URL}/api/v1/posts/author_id/${store.state.user.id}`, config)
     .then((response) => {
       return response.data;
     })
@@ -139,7 +140,7 @@ export async function getAllPostsByAuthorId(id: Number, page: Number): Promise<P
 export async function updatePost(postForm: Post): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     method: "patch",
-    url: `http://localhost:3000/api/v1/posts/id/${postForm.id}`,
+    url: `${BACK_URL}/api/v1/posts/id/${postForm.id}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },

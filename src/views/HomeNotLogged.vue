@@ -5,13 +5,13 @@ import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 </script>
 
 <template>
-  <div id="home-not-logged">
+  <main id="home-not-logged">
     <div class="home-container">
       <IconAboveFont1 />
     <ButtonBig text="Log in" routeUrl="/login" />
     <ButtonBig text="Sign up" routeUrl="/signup" />
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>

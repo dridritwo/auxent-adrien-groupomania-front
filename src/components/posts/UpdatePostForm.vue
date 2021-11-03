@@ -35,7 +35,7 @@ async function submit() {
 </script>
 
 <template>
-  <div class="home-container">
+  <main class="home-container">
     <div class="header-back">
       <div class="header">
         <h1>Editer</h1>
@@ -75,7 +75,7 @@ async function submit() {
         <button class="button">Envoyer</button>
       </form>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="scss" scoped>
