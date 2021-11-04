@@ -1,6 +1,17 @@
-# auxent-adrien-groupomania-front built with Vue 3 + Vite
+# Groupomania front by Adrien Auxent 
 
-This project was created as the front end of Openclassrooms' project 7. Your can find the back-end here : https://github.com/dridritwo/auxent_adrien_groupomania-back
+Groupomania is a social network to share media and text between employees. This is a student project.
+
+It was created following instructions from Openclassrooms' project 7, within its Web Developer carreer path. 
+
+Dependencies :
+ - Vue 3 + Vite
+ - Sass
+ - vuex
+ - vueRouter
+ - Axios
+
+Your can find the back-end here : https://github.com/dridritwo/auxent_adrien_groupomania-back
 
 ### Getting Started
 
@@ -21,7 +32,7 @@ npm run dev
 
 ```
 
-## Recommended IDE Setup
+## built with Vue 3 + Vite : Recommended IDE Setup
 
 - [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
 
