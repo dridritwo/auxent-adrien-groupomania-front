@@ -264,6 +264,8 @@ function onCommentDeleteSuccess(commentId) {
     width: 60px;
     border-radius: 50%;
     margin: 0 5px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
   }
 }
 .post-body {

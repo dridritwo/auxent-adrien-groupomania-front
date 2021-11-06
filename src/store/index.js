@@ -2,24 +2,22 @@ import { createStore } from "vuex";
 
 export const store = createStore({
   state: {
-    user: null 
+    user: null,
   },
   mutations: {
     SET_USER(state, payload) {
-      state.user = payload
-  }
+      state.user = payload;
+    },
   },
   getters: {
-    formattedUser: state => {
-        return `${state.user.username}-${state.user.id}-${state.user.email}`
+    formattedUser: (state) => {
+      return `${state.user.username}-${state.user.id}-${state.user.email}`;
     },
-    userToken: state => {
+    userToken: (state) => {
       return state.user.token;
-    }
-},
-  actions: {
-      
-  }
+    },
+  },
+  actions: {},
 });
 
 export default store;
