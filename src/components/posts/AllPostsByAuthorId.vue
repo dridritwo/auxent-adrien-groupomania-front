@@ -123,34 +123,7 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
   justify-content: start;
   align-items: center;
   position: relative;
-  .post-header {
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 10px;
-    background-color: $fourth;
-    margin-bottom: 0px;
-    text-align: left;
-    img {
-      height: 60px;
-      width: 60px;
-      border-radius: 50%;
-      margin: 0 5px;
-    }
-  }
-  .post-body {
-    width: 100%;
-    img {
-      width: 100%;
-      max-height: 300px;
-      object-fit: contain;
-    }
-  }
-  .post-body,
-  .post-footer {
-    background-color: $primary;
-  }
+  
 }
 #chargement {
   #poto {
