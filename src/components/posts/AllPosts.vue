@@ -55,11 +55,12 @@ function createObserver() {
   observer.observe(sentinal.value);
 }
 
-function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
-  let postIndex = posts.value.findIndex((obj => obj.id == postId));
-  posts.value[postIndex].likeStatus = likeStatus
-  posts.value[postIndex].dislikes = posts.value[postIndex].dislikes + dislikeToAdd
-  posts.value[postIndex].likes = posts.value[postIndex].likes + likeToAdd
+function onLike({ postId, likeStatus, likeToAdd, dislikeToAdd }) {
+  let postIndex = posts.value.findIndex((obj) => obj.id == postId);
+  posts.value[postIndex].likeStatus = likeStatus;
+  posts.value[postIndex].dislikes =
+    posts.value[postIndex].dislikes + dislikeToAdd;
+  posts.value[postIndex].likes = posts.value[postIndex].likes + likeToAdd;
 }
 </script>
 
@@ -67,7 +68,7 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
   <div class="list-container">
     <IconAboveFont1 class="behind" />
 
-    <div v-if="posts" v-for="(post, index) in posts" class="post-list" >
+    <div v-if="posts" v-for="(post, index) in posts" class="post-list">
       <PostComponent
         :title="post.title"
         :id="post.id"
@@ -85,13 +86,13 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
         @onLike="onLike"
       />
     </div>
-  </div>
-  <div id="chargement">
-    <div @click="goGetMorePosts" id="poto">
-      {{ poto }}
+    <div ref="sentinal"></div>
+    <div id="chargement">
+      <div @click="goGetMorePosts" id="poto">
+        {{ poto }}
+      </div>
     </div>
   </div>
-  <div ref="sentinal"></div>
 </template>
 
 <style lang="scss" scoped>
@@ -106,7 +107,6 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
     margin: 0 auto;
     z-index: 0;
     transform: scale(2.5);
-    
   }
 }
 .post-list {
@@ -119,11 +119,12 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
   justify-content: start;
   align-items: center;
   position: relative;
- 
-
 }
 #chargement {
   #poto {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 20px;
     background-color: $secondary;
     padding: 10px;
     width: 300px;

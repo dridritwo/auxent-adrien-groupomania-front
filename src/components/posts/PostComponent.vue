@@ -308,7 +308,7 @@ function onCommentDeleteSuccess(commentId) {
     justify-content: end;
     align-items: center;
     width: 100%;
-    padding: 10px 30px;
+    padding: 10px 25px;
   }
 }
 .fade {

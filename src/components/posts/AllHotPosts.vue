@@ -55,11 +55,12 @@ function createObserver() {
   observer.observe(sentinal.value);
 }
 
-function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
-  let postIndex = hotPosts.value.findIndex((obj => obj.id == postId));
-  hotPosts.value[postIndex].likeStatus = likeStatus
-  hotPosts.value[postIndex].dislikes = hotPosts.value[postIndex].dislikes + dislikeToAdd
-  hotPosts.value[postIndex].likes = hotPosts.value[postIndex].likes + likeToAdd
+function onLike({ postId, likeStatus, likeToAdd, dislikeToAdd }) {
+  let postIndex = hotPosts.value.findIndex((obj) => obj.id == postId);
+  hotPosts.value[postIndex].likeStatus = likeStatus;
+  hotPosts.value[postIndex].dislikes =
+    hotPosts.value[postIndex].dislikes + dislikeToAdd;
+  hotPosts.value[postIndex].likes = hotPosts.value[postIndex].likes + likeToAdd;
 }
 </script>
 
@@ -84,13 +85,13 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
         @onLike="onLike"
       />
     </div>
-  </div>
-  <div id="chargement">
-    <div @click="goGetMorePosts" id="poto">
-      {{ poto }}
+    <div id="chargement">
+      <div @click="goGetMorePosts" id="poto">
+        {{ poto }}
+      </div>
     </div>
+    <div ref="sentinal"></div>
   </div>
-  <div ref="sentinal"></div>
 </template>
 
 <style lang="scss" scoped>
@@ -105,7 +106,6 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
     margin: 0 auto;
     z-index: 0;
     transform: scale(2.5);
-    
   }
 }
 .post-list {
@@ -121,6 +121,8 @@ function onLike({postId, likeStatus, likeToAdd, dislikeToAdd}) {
 }
 #chargement {
   #poto {
+    position: relative;
+    z-index: 10;
     background-color: $secondary;
     padding: 10px;
     width: 300px;
