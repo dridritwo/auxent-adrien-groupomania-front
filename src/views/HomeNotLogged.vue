@@ -18,7 +18,7 @@ import IconAboveFont1 from '@/assets/IconAboveFont1.vue';
 #home-not-logged {
   background-color: $primary;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
