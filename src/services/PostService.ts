@@ -7,9 +7,8 @@ export async function getAllPosts(): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
-      
     },
-    params: { page: 0, limit: 5 }
+    params: { page: 0, limit: 5 },
   };
   let response: Post[] = await axios
     .get(`${BACK_URL}/api/v1/posts`, config)
@@ -26,9 +25,8 @@ export async function getHotPosts(): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
-      
     },
-    params: { page: 0, limit: 5 }
+    params: { page: 0, limit: 5 },
   };
   let response: Post[] = await axios
     .get(`${BACK_URL}/api/v1/posts/hottest`, config)
@@ -46,7 +44,7 @@ export async function getMorePosts(page: number): Promise<Post[]> {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
-    params: { page: page, limit: 5 }
+    params: { page: page, limit: 5 },
   };
   let response: Post[] = await axios
     .get(`${BACK_URL}/api/v1/posts`, config)
@@ -64,7 +62,7 @@ export async function getMoreHotPosts(page: number): Promise<Post[]> {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
     },
-    params: { page: page, limit: 5 }
+    params: { page: page, limit: 5 },
   };
   let response: Post[] = await axios
     .get(`${BACK_URL}/api/v1/posts/hottest`, config)
@@ -77,7 +75,33 @@ export async function getMoreHotPosts(page: number): Promise<Post[]> {
   return response;
 }
 
-export async function sendPostForm(postForm: Post): Promise<Post[]> {
+export async function sendPostForm(
+  postForm: Post,
+  file: File
+): Promise<Post[]> {
+  let imgUrl = postForm.postImageUrl;
+  if (file) {
+    const imageForm = new FormData();
+    imageForm.append("image", file);
+    let imgurResponse = await axios
+      .post(`${BACK_URL}/api/v1/upload`, imageForm, {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${store.state.user.token}`,
+        },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        return null;
+      });
+    if (imgurResponse) {
+      imgUrl = imgurResponse.imgUrl;
+    } else {
+      return null;
+    }
+  }
   let config: AxiosRequestConfig = {
     method: "post",
     url: `${BACK_URL}/api/v1/posts/`,
@@ -87,9 +111,10 @@ export async function sendPostForm(postForm: Post): Promise<Post[]> {
     data: {
       title: postForm.title,
       text: postForm.text,
-      image_url: postForm.postImageUrl,
+      image_url: imgUrl,
     },
   };
+
   let response: Post[] | null = await axios(config)
     .then((response: AxiosResponse) => {
       return response.data;
@@ -106,7 +131,7 @@ export async function deletePost(id: Number): Promise<AxiosResponse> {
     url: `${BACK_URL}/api/v1/posts/id/${id}`,
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
-    }
+    },
   };
   let response: AxiosResponse = await axios(config)
     .then((response: AxiosResponse) => {
@@ -118,13 +143,15 @@ export async function deletePost(id: Number): Promise<AxiosResponse> {
   return response;
 }
 
-export async function getAllPostsByAuthorId(id: Number, page: Number): Promise<Post[]> {
+export async function getAllPostsByAuthorId(
+  id: Number,
+  page: Number
+): Promise<Post[]> {
   let config: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${store.state.user.token}`,
-      
     },
-    params: { page: page, limit: 5 }
+    params: { page: page, limit: 5 },
   };
   let response: Post[] = await axios
     .get(`${BACK_URL}/api/v1/posts/author_id/${store.state.user.id}`, config)
@@ -137,7 +164,30 @@ export async function getAllPostsByAuthorId(id: Number, page: Number): Promise<P
   return response;
 }
 
-export async function updatePost(postForm: Post): Promise<Post[]> {
+export async function updatePost(postForm: Post, file: File): Promise<Post[]> {
+  let imgUrl = postForm.postImageUrl;
+  if (file) {
+    const imageForm = new FormData();
+    imageForm.append("image", file);
+    let imgurResponse = await axios
+      .post(`${BACK_URL}/api/v1/upload`, imageForm, {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${store.state.user.token}`,
+        },
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error: AxiosError) => {
+        return null;
+      });
+    if (imgurResponse) {
+      imgUrl = imgurResponse.imgUrl;
+    } else {
+      return null;
+    }
+  }
   let config: AxiosRequestConfig = {
     method: "patch",
     url: `${BACK_URL}/api/v1/posts/id/${postForm.id}`,
@@ -147,7 +197,7 @@ export async function updatePost(postForm: Post): Promise<Post[]> {
     data: {
       title: postForm.title,
       text: postForm.text,
-      image_url: postForm.postImageUrl,
+      image_url: imgUrl,
     },
   };
   let response: Post[] | null = await axios(config)

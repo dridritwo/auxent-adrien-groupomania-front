@@ -16,12 +16,13 @@ const postForm: Ref<Post> = ref({
 const success: Ref<Boolean> = ref(false);
 const errors: Ref<Boolean> = ref(false);
 const isLoading: Ref<Boolean> = ref(false);
+const inputFile: Ref<File> = ref(null);
 
 async function submit() {
   errors.value = false;
   success.value = false;
   isLoading.value = true;
-  let response: Post[] = await updatePost(postForm.value);
+  let response: Post[] = await updatePost(postForm.value, inputFile.value);
   if (response) {
     success.value = true;
     setTimeout(function () {
@@ -31,6 +32,11 @@ async function submit() {
     errors.value = true;
   }
   isLoading.value = false;
+}
+
+function imageChanged(event) {
+  const file = (event.target as HTMLInputElement).files[0];
+  inputFile.value = file;
 }
 </script>
 
@@ -70,6 +76,13 @@ async function submit() {
             placeholder="Lien de votre image/gif"
           />
         </div>
+        <label for="imageUpload">Envoyer votre image:</label>
+          <input
+            class="input"
+            type="file"
+            name="imageUpload"
+            v-on:change="imageChanged"
+          />
         <div v-if="success" class="success-div">Sauvegarde effectuée</div>
         <div v-if="errors" class="error-div">Erreur</div>
         <button class="button">Envoyer</button>
